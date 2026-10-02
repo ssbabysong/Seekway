@@ -62,6 +62,8 @@ button { font: inherit; color: inherit; }
 .hero[data-sky="dusk"]  { --s1: #d4cbe5; --s2: #f8d9c7; --sun: #ffcfac; --h0: #c4bdd4; --h1: #b3afc8; --h2: #98a5a6; --h3: #7d9286; --path: #fbeee2; --star: transparent; }
 .hero[data-sky="night"] { --s1: #1c2537; --s2: #39405a; --sun: #ebe6d2; --h0: #2f3850; --h1: #3a4560; --h2: #33475a; --h3: #2b3f48; --path: #c3cad8; --star: #e9ecf5; }
 .hero .steps { position: absolute; left: 20px; top: calc(14px + env(safe-area-inset-top, 0px)); font-size: 13px; color: rgba(34, 38, 44, .62); }
+.hero .steps { display: inline-flex; align-items: center; gap: 7px; }
+.hero .logo { width: 20px; height: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0, 0, 0, .15); }
 .hero[data-sky="night"] .steps { color: rgba(236, 240, 248, .7); }
 
 /* sheet */
@@ -456,7 +458,7 @@ function renderHero() {
   const n = steps();
   hero.innerHTML = `
   <svg viewBox="0 0 390 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>
-  <span class="steps">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>
+  <span class="steps"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjY2ZkY2VjIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZjNlY2UzIi8+PC9saW5lYXJHcmFkaWVudD48Y2xpcFBhdGggaWQ9ImMiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0LjUiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjYykiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0idXJsKCNiKSIvPjxjaXJjbGUgY3g9IjQ2IiBjeT0iMTciIHI9IjYiIGZpbGw9IiNmYmUzYzgiLz48cGF0aCBkPSJNMCAzNCBRMTYgMjYgMzIgMzIgVDY0IDI4IFY2NCBIMHoiIGZpbGw9IiNiOWM5ZDgiLz48cGF0aCBkPSJNMCA0NCBRMTggMzcgMzQgNDIgVDY0IDQwIFY2NCBIMHoiIGZpbGw9IiM5ZmI3YTYiLz48cGF0aCBkPSJNMCA1NCBRMjAgNDggMzYgNTMgVDY0IDUyIFY2NCBIMHoiIGZpbGw9IiM4NmE1OGYiLz48cGF0aCBkPSJNMzAgNjYgQzI0IDU4IDI3IDU0IDMzIDUxIFM0MCA0NSAzNSA0MSBTMzEgMzYgMzUgMzMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZiZjdlZiIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMC4yIDQuMiIvPjxjaXJjbGUgY3g9IjM1IiBjeT0iMzIuNSIgcj0iMi40IiBmaWxsPSIjZmZmIi8+PC9nPjwvc3ZnPg==" alt="">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>
   <button class="cover-btn" id="cover-btn" type="button" aria-label="更换封面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19.5 17"/></svg></button>`;
   // the walker climbs the trail as days are recorded (reaches the far end at ~60 days)
   const trail = hero.querySelector(".trail"), walker = hero.querySelector(".walker");
