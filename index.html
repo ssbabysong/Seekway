@@ -192,19 +192,29 @@ button.item:active { opacity: .6; }
 .lp-text { min-height: 0; }
 .lp-body:focus { outline: none; }
 .lp-sign { align-self: flex-end; text-align: right; font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
-.envelopes { display: flex; flex-direction: column; gap: 14px; }
-.envelope { position: relative; width: 100%; min-height: 190px; border: 0; border-radius: 10px; background: var(--env); color: var(--ink); text-align: left; padding: 18px 18px 16px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: 0 10px 24px -16px rgba(60, 50, 30, .45); font: inherit; }
-.envelope::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 46%; background: var(--env-flap); clip-path: polygon(0 0, 100% 0, 50% 100%); }
-.envelope.opened { cursor: pointer; min-height: 140px; }
-.envelope.opened::before { clip-path: polygon(0 0, 100% 0, 50% 28%); opacity: .8; }
-.env-seal { position: absolute; left: 50%; top: 46%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d38a8a, #a65a5a); box-shadow: 0 2px 4px rgba(0, 0, 0, .2); }
-.env-stamp { position: absolute; right: 16px; top: 14px; width: 34px; transform: rotate(4deg); }
-.env-stamp svg { display: block; width: 100%; height: auto; }
-.env-text { position: relative; display: flex; flex-direction: column; gap: 2px; }
-.env-to { font-size: 16px; font-weight: 600; }
-.env-date { font-size: 13px; color: var(--ink-2); }
-.env-from { font-size: 12px; color: var(--muted); }
-.env-del { position: absolute; right: 16px; bottom: 12px; font-size: 13px; }
+.desk { position: relative; margin: 4px -4px 0; border-radius: 18px; background: var(--fill); touch-action: pan-y; }
+.env { position: absolute; width: 128px; height: 84px; border-radius: 6px; background: var(--env); box-shadow: 0 6px 14px -8px rgba(60, 50, 30, .55), 0 1px 2px rgba(60, 50, 30, .12); transform: rotate(var(--r)); transition: transform .35s cubic-bezier(.2, .9, .3, 1.3), box-shadow .25s; cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; overflow: visible; }
+.env .env-flap { position: absolute; inset: 0 0 auto 0; height: 52%; background: var(--env-flap); clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 6px 6px 0 0; }
+.env.ready .env-flap { height: 30%; clip-path: polygon(0 0, 100% 0, 50% 100%); opacity: .75; }
+.env .env-peek { position: absolute; left: 12px; right: 30px; top: -10px; height: 26px; background: var(--paper); border-radius: 3px 3px 0 0; box-shadow: 0 -1px 2px rgba(0, 0, 0, .06); z-index: -1; }
+.env .env-dot { position: absolute; left: 50%; top: 52%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d38a8a, #a65a5a); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.env .env-stamp { position: absolute; right: 8px; top: 8px; width: 18px; transform: rotate(4deg); }
+.env .env-stamp svg { display: block; width: 100%; height: auto; }
+.env .env-label { position: absolute; left: 10px; bottom: 7px; font-size: 11px; color: var(--ink-2); }
+.env.ready .env-label { color: var(--accent); font-weight: 600; }
+.env.held { cursor: grabbing; transform: rotate(0deg) scale(1.08); box-shadow: 0 18px 30px -12px rgba(60, 50, 30, .5); transition: transform .2s, box-shadow .2s; }
+.env:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.env-tip { position: absolute; width: 220px; padding: 12px 14px; border-radius: 14px; background: var(--bg); box-shadow: 0 12px 30px -10px rgba(0, 0, 0, .3); display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.env-tip span { font-size: 13px; color: var(--muted); }
+.env-tip .btn { align-self: flex-start; margin-top: 4px; }
+.reader-wrap { align-items: center; padding: 20px; }
+.reader { width: 100%; max-width: 420px; max-height: 100%; display: flex; flex-direction: column; gap: 12px; position: relative; }
+.reader-paper { max-height: 64vh; overflow-y: auto; z-index: 1; padding-bottom: 64px; }
+.reader-env { position: relative; height: 70px; margin: -46px 6px 0; border-radius: 0 0 10px 10px; background: var(--env); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .45); z-index: 2; }
+.reader-env .env-stamp { position: absolute; right: 12px; bottom: 10px; top: auto; width: 24px; }
+.reader-flap { position: absolute; left: 0; right: 0; bottom: 100%; height: 60px; background: var(--env-flap); clip-path: polygon(0 100%, 100% 100%, 50% 0); z-index: -1; transform-origin: bottom; }
+.reader-actions { padding: 0 4px; }
+.reader-actions .btn { background: var(--bg); padding: 10px 18px; border-radius: 12px; }
 :root { --paper: #fffdf8; --paper-line: #ece6da; --env: #efe5d3; --env-flap: #e6d9c2; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #222420; --paper-line: #33362f; --env: #2c2922; --env-flap: #36322a; } }
 :root[data-theme="dark"] { --paper: #222420; --paper-line: #33362f; --env: #2c2922; --env-flap: #36322a; }
@@ -253,6 +263,18 @@ button.item:active { opacity: .6; }
 .legend .ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rose); }
 .rlabel .rb { font-size: 15px; color: var(--ink); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 
+@media (prefers-reduced-motion: no-preference) {
+  .env.drop { animation: drop .5s cubic-bezier(.2, .9, .3, 1.2) backwards; }
+  @keyframes drop { from { transform: translateY(-28px) rotate(calc(var(--r) * 2)) scale(.9); opacity: 0; } }
+  .env.shake { animation: shake .45s ease-in-out; }
+  @keyframes shake { 20% { transform: rotate(calc(var(--r) - 6deg)); } 45% { transform: rotate(calc(var(--r) + 5deg)); } 70% { transform: rotate(calc(var(--r) - 3deg)); } }
+  .env.ready::after { content: ""; position: absolute; right: -4px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--fill); animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 50% { transform: scale(1.35); } }
+  .reader-env { animation: pocket .4s ease-out backwards; }
+  @keyframes pocket { from { transform: translateY(30px); } }
+  .reader-paper { animation: slideout .6s cubic-bezier(.2, .9, .25, 1) .35s backwards; }
+  @keyframes slideout { from { transform: translateY(120px) scale(.92); } }
+}
 @media (prefers-reduced-motion: no-preference) {
   .rnode.here { animation: breathe 2.6s ease-in-out infinite; }
   @keyframes breathe { 50% { box-shadow: 0 0 0 4px var(--bg), 0 0 0 13px var(--accent-soft); } }
@@ -1061,10 +1083,17 @@ function addMonths(dateStr, m) { const d = parseDate(dateStr); d.setMonth(d.getM
 const ymdCN = s => s.slice(0, 4) + "年" + md(s);
 const OPEN_AFTER = [[1, "1 个月"], [3, "3 个月"], [6, "半年"], [12, "1 年"]];
 let letterMonths = 6;
-const STAMP = `<svg viewBox="0 0 40 48" aria-hidden="true"><rect x="1" y="1" width="38" height="46" rx="2" fill="#fbf8f1" stroke="#c9b99a" stroke-dasharray="2 2"/><rect x="5" y="5" width="30" height="30" fill="#cfdcec"/><path d="M5 26 Q14 20 22 24 T35 22 V35 H5z" fill="#9fb7a6"/><path d="M5 31 Q16 26 24 30 T35 29 V35 H5z" fill="#86a58f"/><circle cx="28" cy="12" r="3" fill="#fbe3c8"/><text x="20" y="43" font-size="5" text-anchor="middle" fill="#9a8a6a">SEEKWAY</text></svg>`;
+const STAMP = `<svg viewBox="0 0 40 48" aria-hidden="true"><rect x="1" y="1" width="38" height="46" rx="2" fill="#fbf8f1" stroke="#c9b99a" stroke-dasharray="2 2"/><rect x="5" y="5" width="30" height="30" fill="#cfdcec"/><path d="M5 26 Q14 20 22 24 T35 22 V35 H5z" fill="#9fb7a6"/><path d="M5 31 Q16 26 24 30 T35 29 V35 H5z" fill="#86a58f"/><circle cx="28" cy="12" r="3" fill="#fbe3c8"/></svg>`;
+const ENV_W = 128, ENV_H = 84;
+// a stable pseudo-random number per letter, so the pile looks the same each visit
+const seeded = (id, k) => { let h = 2166136261; for (const c of id + ":" + k) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
+function envPositions() { try { return JSON.parse(localStorage.getItem("seekway-env-pos") || "{}"); } catch (e) { return {}; } }
+function saveEnvPosition(id, pos) { const all = envPositions(); all[id] = pos; try { localStorage.setItem("seekway-env-pos", JSON.stringify(all)); } catch (e) {} }
+let envZ = 10, tipTimer;
+document.addEventListener("pointerdown", e => { const tip = $("env-tip"); if (tip && !tip.hidden && !e.target.closest(".env-tip")) tip.hidden = true; }, true);
 function renderLetter(animate) {
-  const letters = store.list("letter").sort((a, b) => a.openOn.localeCompare(b.openOn));
-  const open = letters.filter(l => l.openOn <= TODAY).reverse(), sealed = letters.filter(l => l.openOn > TODAY);
+  const letters = store.list("letter").sort((a, b) => a.at - b.at);
+  const sealedN = letters.filter(l => l.openOn > TODAY).length, readyN = letters.length - sealedN;
   const openOn = addMonths(TODAY, letterMonths);
   paint(`
   <div class="section first">
@@ -1082,34 +1111,12 @@ function renderLetter(animate) {
     <button class="btn primary block" id="l-save" type="button">装进信封</button>
     <p class="hint" id="save-status">${whereText()}</p>
   </div>
-  ${sealed.length ? `<div class="section"><div class="head-row"><h2>还在路上</h2><span class="hint">${sealed.length} 封</span></div>
-    <div class="envelopes">${sealed.map(l => `
-      <div class="envelope">
-        <span class="env-stamp">${STAMP}</span>
-        <span class="env-seal" aria-hidden="true"></span>
-        <div class="env-text">
-          <span class="env-to">致 以后的我</span>
-          <span class="env-date">${ymdCN(l.openOn)} 开启 · 还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天</span>
-          <span class="env-from">寄出于 ${ymdCN(l.date)}</span>
-        </div>
-        <button class="btn link danger env-del" type="button" data-del="${esc(l.id)}">删除</button>
-      </div>`).join("")}</div></div>` : ""}
-  ${open.length ? `<div class="section"><div class="head-row"><h2>已经寄到</h2><span class="hint">${open.length} 封</span></div>
-    <div class="envelopes">${open.map(l => ui.open[l.id] ? `
-      <div class="letter-paper read">
-        <div class="lp-to">亲爱的以后的我：</div>
-        <p class="lp-text">${esc(l.body)}</p>
-        <div class="lp-sign">现在的我<br>${ymdCN(l.date)}</div>
-        <div class="row between"><button class="btn link muted" type="button" data-toggle="${esc(l.id)}">折起来</button><button class="btn link danger" type="button" data-del="${esc(l.id)}">删除</button></div>
-      </div>` : `
-      <button class="envelope opened" type="button" data-toggle="${esc(l.id)}">
-        <span class="env-stamp">${STAMP}</span>
-        <div class="env-text">
-          <span class="env-to">来自 ${ymdCN(l.date)} 的你</span>
-          <span class="env-date">${ymdCN(l.openOn)} 寄到 · 点开读</span>
-        </div>
-      </button>`).join("")}</div></div>` : ""}
-  ${!letters.length ? `<div class="section"><p class="hint">还没有信。写一封，${OPEN_AFTER.find(o => o[0] === letterMonths)[1]}后的你会收到。</p></div>` : ""}`, animate);
+  ${letters.length ? `<div class="section">
+    <div><div class="head-row"><h2>信箱</h2><span class="hint">${readyN ? readyN + " 封可以拆" : ""}${readyN && sealedN ? " · " : ""}${sealedN ? sealedN + " 封还在路上" : ""}</span></div>
+    <p class="hint">拖动信封可以随意摆放。点一下还没到日子的信，看看它什么时候寄到；寄到的信，点开就能读。</p></div>
+    <div class="desk" id="desk"></div>
+  </div>` : `<div class="section"><p class="hint">还没有信。写一封，${OPEN_AFTER.find(o => o[0] === letterMonths)[1]}后的你会收到。</p></div>`}`, animate);
+
   const body = $("l-body");
   body.addEventListener("input", () => autogrow(body)); requestAnimationFrame(() => autogrow(body));
   view.querySelectorAll("[data-months]").forEach(b => b.onclick = () => {
@@ -1123,9 +1130,103 @@ function renderLetter(animate) {
     const at = Date.now();
     put("l-" + at, { type: "letter", at, date: TODAY, body: text, openOn: addMonths(TODAY, letterMonths) }).catch(() => {});
     renderLetter();
+    requestAnimationFrame(() => { const d = $("desk"); if (d) d.scrollIntoView({ behavior: "smooth", block: "center" }); });
   };
-  view.querySelectorAll("[data-toggle]").forEach(b => b.onclick = () => { ui.open[b.dataset.toggle] = !ui.open[b.dataset.toggle]; renderLetter(); });
-  view.querySelectorAll("[data-del]").forEach(b => b.onclick = e => { e.stopPropagation(); arm(b, "确定删除？", () => { store.remove(b.dataset.del).catch(() => {}); renderLetter(); }); });
+  if (letters.length) layoutDesk(letters, animate);
+}
+function layoutDesk(letters, animate) {
+  const desk = $("desk"), W = desk.clientWidth;
+  const cols = Math.max(2, Math.floor(W / (ENV_W * 0.86)));
+  const rows = Math.ceil(letters.length / cols);
+  const H = Math.max(220, rows * 78 + ENV_H + 40);
+  desk.style.height = H + "px";
+  const saved = envPositions();
+  desk.innerHTML = letters.map((l, i) => {
+    const ready = l.openOn <= TODAY;
+    const sp = saved[l.id];
+    const col = i % cols, row = Math.floor(i / cols);
+    const cellW = (W - ENV_W) / Math.max(1, cols - 1);
+    const x = sp ? sp.x * (W - ENV_W) : Math.min(W - ENV_W, Math.max(0, col * cellW + (seeded(l.id, "x") - .5) * 36));
+    const y = sp ? Math.min(H - ENV_H, sp.y) : 18 + row * 78 + (seeded(l.id, "y") - .5) * 30 + (col % 2) * 16;
+    const r = sp ? sp.r : (seeded(l.id, "r") - .5) * 22;
+    return `<div class="env${ready ? " ready" : ""}${animate ? " drop" : ""}" data-id="${esc(l.id)}" role="button" tabindex="0"
+      aria-label="${ready ? "可以拆开的信，写于 " + ymdCN(l.date) : "封着的信，" + ymdCN(l.openOn) + " 寄到"}"
+      style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;--r:${r.toFixed(1)}deg;z-index:${i + 1};animation-delay:${Math.min(i * 60, 500)}ms">
+      <span class="env-flap"></span>${ready ? `<span class="env-peek"></span>` : `<span class="env-dot"></span>`}
+      <span class="env-stamp">${STAMP}</span>
+      <span class="env-label">${ready ? "可以拆了" : md(l.openOn) + " 寄到"}</span>
+    </div>`;
+  }).join("") + `<div class="env-tip" id="env-tip" hidden></div>`;
+  envZ = letters.length + 1;
+  desk.querySelectorAll(".env").forEach(el => bindEnvelope(el, desk));
+
+}
+function bindEnvelope(el, desk) {
+  let sx = null, sy = 0, ox = 0, oy = 0, moved = false;
+  const id = el.dataset.id;
+  el.addEventListener("pointerdown", e => {
+    if (e.button > 0) return;
+    sx = e.clientX; sy = e.clientY; ox = parseFloat(el.style.left); oy = parseFloat(el.style.top); moved = false;
+    el.setPointerCapture(e.pointerId);
+    el.style.zIndex = ++envZ;
+    el.classList.add("held");
+  });
+  el.addEventListener("pointermove", e => {
+    if (sx === null) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (!moved && Math.hypot(dx, dy) > 6) { moved = true; haptic(); $("env-tip").hidden = true; }
+    if (!moved) return;
+    const x = Math.max(-10, Math.min(desk.clientWidth - ENV_W + 10, ox + dx));
+    const y = Math.max(-6, Math.min(desk.clientHeight - ENV_H + 6, oy + dy));
+    el.style.left = x + "px"; el.style.top = y + "px";
+  });
+  const up = () => {
+    if (sx === null) return;
+    sx = null; el.classList.remove("held");
+    if (moved) {
+      const r = (Math.random() - .5) * 18;
+      el.style.setProperty("--r", r.toFixed(1) + "deg");
+      saveEnvPosition(id, { x: parseFloat(el.style.left) / Math.max(1, desk.clientWidth - ENV_W), y: parseFloat(el.style.top), r });
+    } else tapEnvelope(el, desk);
+  };
+  el.addEventListener("pointerup", up);
+  el.addEventListener("pointercancel", up);
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tapEnvelope(el, desk); } });
+}
+function tapEnvelope(el, desk) {
+  const l = store.docs[el.dataset.id]; if (!l) return;
+  haptic();
+  if (l.openOn <= TODAY) return openLetter(el.dataset.id);
+  el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake");
+  const tip = $("env-tip");
+  const left = Math.max(0, Math.min(desk.clientWidth - 220, parseFloat(el.style.left) - 46));
+  const below = parseFloat(el.style.top) < 80;
+  tip.style.left = left + "px";
+  tip.style.top = (below ? parseFloat(el.style.top) + ENV_H + 10 : parseFloat(el.style.top) - 92) + "px";
+  tip.innerHTML = `<b>${ymdCN(l.openOn)} 才能拆开</b><span>还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天 · 寄出于 ${md(l.date)}</span><button class="btn link danger" type="button" id="env-del">删除这封信</button>`;
+  tip.hidden = false;
+  tip.style.zIndex = ++envZ;
+  clearTimeout(tipTimer); tipTimer = setTimeout(() => { if (!$("env-del")?.dataset.armed) tip.hidden = true; }, 5000);
+  $("env-del").onclick = () => arm($("env-del"), "确定删除？", () => { store.remove(el.dataset.id).catch(() => {}); renderLetter(); });
+}
+function openLetter(id) {
+  const l = store.docs[id]; if (!l) return;
+  document.body.classList.add("locked");
+  $("sheet-root").innerHTML = `
+  <div class="sheet-wrap reader-wrap" id="sheet-wrap">
+    <div class="reader" role="dialog" aria-modal="true" aria-label="来自 ${ymdCN(l.date)} 的信">
+      <div class="letter-paper read reader-paper">
+        <div class="lp-to">亲爱的以后的我：</div>
+        <p class="lp-text">${esc(l.body)}</p>
+        <div class="lp-sign">现在的我<br>${ymdCN(l.date)}</div>
+      </div>
+      <div class="reader-env"><span class="env-stamp">${STAMP}</span></div>
+      <div class="row between reader-actions"><button class="btn" type="button" id="r-close">折起来</button><button class="btn link danger" type="button" id="r-del">删除这封信</button></div>
+    </div>
+  </div>`;
+  $("r-close").onclick = closeSheet;
+  $("r-del").onclick = () => arm($("r-del"), "确定删除？", () => { store.remove(id).catch(() => {}); closeSheet(); renderLetter(); });
+  $("sheet-wrap").addEventListener("click", e => { if (e.target.id === "sheet-wrap") closeSheet(); });
 }
 
 /* ---------- shell ---------- */
@@ -1212,7 +1313,7 @@ function applyPull(p, settle) {
 function toggleHero(open) { if (open !== heroOpen) haptic(); heroOpen = open; applyPull(open ? heroFull() - HERO_BASE : 0, true); }
 (function pullToOpen() {
   let y0 = null, dy = 0, raf = 0, crossed = false;
-  const blocked = t => $("sheet-wrap") || (t && t.closest && t.closest("textarea, input, select, button, .tabbar"));
+  const blocked = t => $("sheet-wrap") || (t && t.closest && t.closest("textarea, input, select, button, .tabbar, .desk"));
   const frame = () => {
     raf = 0;
     const range = heroFull() - HERO_BASE;
