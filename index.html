@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Seekway">
@@ -49,13 +49,21 @@
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { background: var(--bg); }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: manipulation; overscroll-behavior-y: none; }
+body { overflow-x: hidden; overscroll-behavior-y: none; }
+button, .tabbar, .hero { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 body { color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
 body.locked { overflow: hidden; }
 button { font: inherit; color: inherit; }
 .app { max-width: 560px; margin: 0 auto; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 
 /* landscape */
-.hero { position: relative; height: 200px; overflow: hidden; }
+.hero { position: relative; height: 250px; overflow: hidden; cursor: zoom-in; transition: height .5s cubic-bezier(.2, .9, .25, 1); }
+.hero.open { cursor: zoom-out; }
+.hero.dragging { transition: none; }
+.hero .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.hero .pull-hint { position: absolute; left: 0; right: 0; bottom: 36px; text-align: center; font-size: 12px; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 4px rgba(0, 0, 0, .3); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.hero.open .pull-hint { opacity: 1; }
 .hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero[data-sky="day"]   { --s1: #cfdcec; --s2: #f3ece3; --sun: #fbe3c8; --h0: #c9d4e0; --h1: #b9c9d8; --h2: #9fb7a6; --h3: #86a58f; --path: #f6f1e8; --star: transparent; }
 .hero[data-sky="dawn"]  { --s1: #dbe3f0; --s2: #fbe6d6; --sun: #ffd9b8; --h0: #ccd3e2; --h1: #bcc8d9; --h2: #a3b9aa; --h3: #8aa793; --path: #fbf3ea; --star: transparent; }
@@ -68,6 +76,7 @@ button { font: inherit; color: inherit; }
 
 /* sheet */
 .sheet { position: relative; margin-top: -26px; background: var(--bg); border-radius: 26px 26px 0 0; padding: 26px 20px 0; }
+.sheet::before { content: ""; position: absolute; top: 9px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: var(--line); }
 .kicker { font-size: 13px; color: var(--muted); }
 h1 { font-size: 20px; font-weight: 600; line-height: 1.5; margin: 4px 0 0; letter-spacing: .01em; text-wrap: balance; }
 h2 { font-size: 17px; font-weight: 600; line-height: 1.5; margin: 0; }
@@ -79,9 +88,9 @@ h2 { font-size: 17px; font-weight: 600; line-height: 1.5; margin: 0; }
 .quote { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--fill); color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* inputs */
-textarea.write { display: block; width: 100%; border: 0; border-radius: 14px; background: var(--fill); color: var(--ink); font: inherit; font-size: 15px; line-height: 1.8; padding: 12px 14px; resize: none; min-height: 112px; overflow: hidden; }
+textarea.write { display: block; width: 100%; border: 0; border-radius: 14px; background: var(--fill); color: var(--ink); font: inherit; font-size: 16px; line-height: 1.75; padding: 12px 14px; resize: none; min-height: 112px; overflow: hidden; }
 textarea.write.short { min-height: 76px; }
-input.field { width: 100%; min-width: 0; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: inherit; font-size: 15px; padding: 10px 14px; }
+input.field { width: 100%; min-width: 0; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: inherit; font-size: 16px; padding: 10px 14px; }
 select.field { appearance: none; -webkit-appearance: none; width: auto; cursor: pointer; padding-right: 30px; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
 textarea.write:focus, input.field:focus, select.field:focus { outline: 2px solid var(--accent-soft); }
 textarea::placeholder, input::placeholder { color: var(--faint); }
@@ -434,7 +443,7 @@ function settings() { return store.docs["s-settings"] || { type: "settings", cov
 function sceneMarkup(key, sky, withWalker) {
   const k = SKIES[sky], st = settings();
   const night = sky === "night";
-  const stars = night ? [[40, 30], [90, 55], [140, 22], [260, 40], [320, 20], [360, 60], [300, 75], [60, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="#e9ecf5"/>`).join("") : "";
+  const stars = night ? [[40, 30], [90, 55], [140, 22], [260, 40], [320, 20], [360, 60], [300, 75], [60, 80], [30, -60], [120, -110], [200, -40], [280, -130], [350, -70], [170, -150], [80, -20], [330, -10]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="#e9ecf5"/>`).join("") : "";
   const gid = "sky-" + key + "-" + Math.random().toString(36).slice(2, 7);
   if (key === "photo" && st.photo) {
     return `<image href="${st.photo}" x="0" y="0" width="390" height="230" preserveAspectRatio="xMidYMid slice"/>
@@ -443,7 +452,7 @@ function sceneMarkup(key, sky, withWalker) {
   }
   const s = SCENES[key] || SCENES.mountain;
   return `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${k.s1}"/><stop offset="1" stop-color="${k.s2}"/></linearGradient></defs>
-    <rect width="390" height="230" fill="url(#${gid})"/>${stars}
+    <rect y="-170" width="390" height="400" fill="url(#${gid})"/>${stars}
     <circle cx="${sky === "dusk" ? 90 : 300}" cy="${sky === "dusk" ? 112 : 66}" r="20" fill="${k.sun}" opacity=".95"/>
     ${s.ground}
     ${night ? `<rect width="390" height="230" fill="#0e1630" opacity=".45"/>` : ""}
@@ -457,7 +466,9 @@ function renderHero() {
   hero.dataset.sky = key === "photo" ? "photo" : sky;
   const n = steps();
   hero.innerHTML = `
-  <svg viewBox="0 0 390 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>
+  ${key === "photo" ? `<div class="photo" style="background-image:url('${st.photo}')"></div><div class="photo" style="background:linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,0) 45%)"></div>`
+    : `<svg viewBox="0 -170 390 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>`}
+  <span class="pull-hint">轻点或上滑收起</span>
   <span class="steps"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjY2ZkY2VjIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZjNlY2UzIi8+PC9saW5lYXJHcmFkaWVudD48Y2xpcFBhdGggaWQ9ImMiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0LjUiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjYykiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0idXJsKCNiKSIvPjxjaXJjbGUgY3g9IjQ2IiBjeT0iMTciIHI9IjYiIGZpbGw9IiNmYmUzYzgiLz48cGF0aCBkPSJNMCAzNCBRMTYgMjYgMzIgMzIgVDY0IDI4IFY2NCBIMHoiIGZpbGw9IiNiOWM5ZDgiLz48cGF0aCBkPSJNMCA0NCBRMTggMzcgMzQgNDIgVDY0IDQwIFY2NCBIMHoiIGZpbGw9IiM5ZmI3YTYiLz48cGF0aCBkPSJNMCA1NCBRMjAgNDggMzYgNTMgVDY0IDUyIFY2NCBIMHoiIGZpbGw9IiM4NmE1OGYiLz48cGF0aCBkPSJNMzAgNjYgQzI0IDU4IDI3IDU0IDMzIDUxIFM0MCA0NSAzNSA0MSBTMzEgMzYgMzUgMzMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZiZjdlZiIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMC4yIDQuMiIvPjxjaXJjbGUgY3g9IjM1IiBjeT0iMzIuNSIgcj0iMi40IiBmaWxsPSIjZmZmIi8+PC9nPjwvc3ZnPg==" alt="">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>
   <button class="cover-btn" id="cover-btn" type="button" aria-label="更换封面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19.5 17"/></svg></button>`;
   // the walker climbs the trail as days are recorded (reaches the far end at ~60 days)
@@ -468,6 +479,7 @@ function renderHero() {
     walker.setAttribute("cx", p.x.toFixed(1)); walker.setAttribute("cy", p.y.toFixed(1));
   }
   $("cover-btn").onclick = openCoverPicker;
+  if (key === "photo") { const im = new Image(); im.onload = () => { photoAspect = im.naturalWidth / im.naturalHeight; if (heroOpen) setHero(heroFull(), true); }; im.src = st.photo; }
 }
 function loadPhoto(file) {
   return new Promise((resolve, reject) => {
@@ -1069,6 +1081,54 @@ if (window.claude && window.claude.use) {
     const row = $("mirror-row"); if (fn && row) row.hidden = false;
   }).catch(() => {});
 }
+/* ---------- phone fit: no zooming, and the cover opens up when pulled down ---------- */
+(function lockZoom() {
+  let m = document.querySelector('meta[name="viewport"]');
+  if (!m) { m = document.createElement("meta"); m.name = "viewport"; document.head.appendChild(m); }
+  m.content = "width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover";
+  ["gesturestart", "gesturechange"].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
+  document.addEventListener("touchmove", e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+})();
+const HERO_BASE = 250;
+let heroOpen = false, photoAspect = 0;
+function heroFull() {
+  const w = $("hero").clientWidth, st = settings();
+  const natural = st.cover === "photo" && st.photo && photoAspect ? w / photoAspect : w * 400 / 390;
+  return Math.max(HERO_BASE + 60, Math.min(natural, window.innerHeight * 0.8));
+}
+function setHero(h, animate) {
+  const el = $("hero");
+  el.classList.toggle("dragging", !animate);
+  el.style.height = Math.round(h) + "px";
+  el.classList.toggle("open", h > HERO_BASE + 30);
+}
+function toggleHero(open) { heroOpen = open; setHero(open ? heroFull() : HERO_BASE, true); }
+(function pullToOpen() {
+  let y0 = null, dy = 0;
+  const blocked = t => $("sheet-wrap") || (t && t.closest && t.closest("textarea, input, select, button, .tabbar"));
+  window.addEventListener("touchstart", e => {
+    if (e.touches.length !== 1 || window.scrollY > 0 || blocked(e.target)) { y0 = null; return; }
+    y0 = e.touches[0].clientY; dy = 0;
+  }, { passive: true });
+  window.addEventListener("touchmove", e => {
+    if (y0 === null) return;
+    dy = e.touches[0].clientY - y0;
+    if (window.scrollY > 0 || (dy < 0 && !heroOpen)) { y0 = null; setHero(heroOpen ? heroFull() : HERO_BASE, true); return; }
+    e.preventDefault();
+    const base = heroOpen ? heroFull() : HERO_BASE;
+    const pull = dy > 0 ? Math.min(dy * 0.6, heroFull() + 40 - base) : dy;
+    setHero(Math.max(HERO_BASE, base + pull), false);
+  }, { passive: false });
+  window.addEventListener("touchend", () => {
+    if (y0 === null) return;
+    y0 = null;
+    if (!heroOpen && dy > 70) toggleHero(true);
+    else if (heroOpen && dy < -50) toggleHero(false);
+    else toggleHero(heroOpen);
+  });
+  $("hero").addEventListener("click", e => { if (!e.target.closest("button")) toggleHero(!heroOpen); });
+  window.addEventListener("resize", () => setHero(heroOpen ? heroFull() : HERO_BASE, false));
+})();
 renderHero();
 store.init().then(() => { renderHero(); show(ui.tab); });
 </script>
