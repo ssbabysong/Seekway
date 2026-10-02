@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Seekway">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#cfdcec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1c2537" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 <title>Seekway</title>
@@ -55,16 +55,20 @@ button, .tabbar, .hero { -webkit-user-select: none; user-select: none; -webkit-t
 body { color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
 body.locked { overflow: hidden; }
 button { font: inherit; color: inherit; }
-.app { max-width: 560px; margin: 0 auto; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+:root { padding-top: 0 !important; }
+.app { --hero-base: calc(250px + env(safe-area-inset-top, 0px)); --hero-full: calc(330px + env(safe-area-inset-top, 0px)); max-width: 560px; margin: 0 auto; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+.app.settling .hero .art, .app.settling .sheet { transition: transform .55s cubic-bezier(.2, .9, .25, 1); }
 
 /* landscape */
-.hero { position: relative; height: 250px; overflow: hidden; cursor: zoom-in; transition: height .5s cubic-bezier(.2, .9, .25, 1); }
+.hero { position: relative; height: var(--hero-full); margin-bottom: calc(var(--hero-base) - var(--hero-full)); overflow: hidden; cursor: zoom-in; }
+.hero .art { position: absolute; left: 0; right: 0; top: 0; height: var(--hero-full); transform: translate3d(0, calc(var(--hero-base) - var(--hero-full)), 0); will-change: transform; }
+.hero .art > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(env(safe-area-inset-top, 0px) + 24px); background: linear-gradient(rgba(0, 0, 0, .16), rgba(0, 0, 0, 0)); pointer-events: none; opacity: 0; }
+@supports (padding-top: env(safe-area-inset-top)) { .hero::after { opacity: 1; } }
 .hero.open { cursor: zoom-out; }
-.hero.dragging { transition: none; }
 .hero .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
-.hero .pull-hint { position: absolute; left: 0; right: 0; bottom: 36px; text-align: center; font-size: 12px; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 4px rgba(0, 0, 0, .3); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.hero .pull-hint { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 46px); text-align: center; font-size: 12px; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 4px rgba(0, 0, 0, .3); opacity: 0; transition: opacity .3s; pointer-events: none; }
 .hero.open .pull-hint { opacity: 1; }
-.hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero[data-sky="day"]   { --s1: #cfdcec; --s2: #f3ece3; --sun: #fbe3c8; --h0: #c9d4e0; --h1: #b9c9d8; --h2: #9fb7a6; --h3: #86a58f; --path: #f6f1e8; --star: transparent; }
 .hero[data-sky="dawn"]  { --s1: #dbe3f0; --s2: #fbe6d6; --sun: #ffd9b8; --h0: #ccd3e2; --h1: #bcc8d9; --h2: #a3b9aa; --h3: #8aa793; --path: #fbf3ea; --star: transparent; }
 .hero[data-sky="dusk"]  { --s1: #d4cbe5; --s2: #f8d9c7; --sun: #ffcfac; --h0: #c4bdd4; --h1: #b3afc8; --h2: #98a5a6; --h3: #7d9286; --path: #fbeee2; --star: transparent; }
@@ -75,7 +79,7 @@ button { font: inherit; color: inherit; }
 .hero[data-sky="night"] .steps { color: rgba(236, 240, 248, .7); }
 
 /* sheet */
-.sheet { position: relative; margin-top: -26px; background: var(--bg); border-radius: 26px 26px 0 0; padding: 26px 20px 0; }
+.sheet { position: relative; z-index: 1; will-change: transform; margin-top: -26px; background: var(--bg); border-radius: 26px 26px 0 0; padding: 26px 20px 0; }
 .sheet::before { content: ""; position: absolute; top: 9px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: var(--line); }
 .kicker { font-size: 13px; color: var(--muted); }
 h1 { font-size: 20px; font-weight: 600; line-height: 1.5; margin: 4px 0 0; letter-spacing: .01em; text-wrap: balance; }
@@ -177,6 +181,34 @@ button.item:active { opacity: .6; }
 .panel .scroll { overflow-y: auto; padding: 8px 20px calc(30px + env(safe-area-inset-bottom, 0px)); }
 .step-n { font-size: 13px; color: var(--accent); font-weight: 600; }
 
+/* letters */
+.label-sm { font-size: 15px; font-weight: 500; }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pills button { border: 0; border-radius: 999px; padding: 8px 16px; font-size: 15px; background: var(--fill); color: var(--ink-2); cursor: pointer; transition: background .15s, color .15s; }
+.pills button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.letter-paper { position: relative; background: var(--paper); border-radius: 8px; padding: 22px 22px 18px; box-shadow: 0 1px 2px rgba(60, 50, 30, .06), 0 10px 26px -14px rgba(60, 50, 30, .3); display: flex; flex-direction: column; gap: 6px; }
+.lp-to { font-size: 15px; color: var(--ink-2); }
+.lp-body, .lp-text { width: 100%; border: 0; resize: none; padding: 0; margin: 0; font: inherit; font-size: 16px; line-height: 32px; color: var(--ink); background-color: transparent; background-image: linear-gradient(transparent 31px, var(--paper-line) 31px); background-size: 100% 32px; background-attachment: local; min-height: 192px; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; }
+.lp-text { min-height: 0; }
+.lp-body:focus { outline: none; }
+.lp-sign { align-self: flex-end; text-align: right; font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
+.envelopes { display: flex; flex-direction: column; gap: 14px; }
+.envelope { position: relative; width: 100%; min-height: 190px; border: 0; border-radius: 10px; background: var(--env); color: var(--ink); text-align: left; padding: 18px 18px 16px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: 0 10px 24px -16px rgba(60, 50, 30, .45); font: inherit; }
+.envelope::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 46%; background: var(--env-flap); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.envelope.opened { cursor: pointer; min-height: 140px; }
+.envelope.opened::before { clip-path: polygon(0 0, 100% 0, 50% 28%); opacity: .8; }
+.env-seal { position: absolute; left: 50%; top: 46%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d38a8a, #a65a5a); box-shadow: 0 2px 4px rgba(0, 0, 0, .2); }
+.env-stamp { position: absolute; right: 16px; top: 14px; width: 34px; transform: rotate(4deg); }
+.env-stamp svg { display: block; width: 100%; height: auto; }
+.env-text { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.env-to { font-size: 16px; font-weight: 600; }
+.env-date { font-size: 13px; color: var(--ink-2); }
+.env-from { font-size: 12px; color: var(--muted); }
+.env-del { position: absolute; right: 16px; bottom: 12px; font-size: 13px; }
+:root { --paper: #fffdf8; --paper-line: #ece6da; --env: #efe5d3; --env-flap: #e6d9c2; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #222420; --paper-line: #33362f; --env: #2c2922; --env-flap: #36322a; } }
+:root[data-theme="dark"] { --paper: #222420; --paper-line: #33362f; --env: #2c2922; --env-flap: #36322a; }
+
 /* cover */
 .cover-btn { position: absolute; right: 14px; top: calc(10px + env(safe-area-inset-top, 0px)); width: 34px; height: 34px; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer; color: #2b3038; background: rgba(255, 255, 255, .55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .cover-btn svg { width: 18px; height: 18px; }
@@ -228,7 +260,7 @@ button.item:active { opacity: .6; }
   @keyframes pop { from { transform: translateY(-50%) scale(.7); } }
   .rstop.pop { animation-name: popnode; }
   @keyframes popnode { from { transform: scale(.4); } }
-  .sheet.enter { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; }
+  .sheet.enter { animation: rise .45s cubic-bezier(.2, .8, .2, 1) backwards; }
   .hero svg .walker { animation: pulse 2.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
   @keyframes rise { from { transform: translateY(18px); } to { transform: none; } }
   @keyframes pulse { 50% { transform: scale(1.35); } }
@@ -466,10 +498,8 @@ function renderHero() {
   hero.dataset.sky = key === "photo" ? "photo" : sky;
   const n = steps();
   hero.innerHTML = `
-  ${key === "photo" ? `<div class="photo" style="background-image:url('${st.photo}')"></div><div class="photo" style="background:linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,0) 45%)"></div>`
-    : `<svg viewBox="0 -170 390 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>`}
-  <span class="pull-hint">轻点或上滑收起</span>
-  <span class="steps"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjY2ZkY2VjIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZjNlY2UzIi8+PC9saW5lYXJHcmFkaWVudD48Y2xpcFBhdGggaWQ9ImMiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0LjUiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjYykiPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0idXJsKCNiKSIvPjxjaXJjbGUgY3g9IjQ2IiBjeT0iMTciIHI9IjYiIGZpbGw9IiNmYmUzYzgiLz48cGF0aCBkPSJNMCAzNCBRMTYgMjYgMzIgMzIgVDY0IDI4IFY2NCBIMHoiIGZpbGw9IiNiOWM5ZDgiLz48cGF0aCBkPSJNMCA0NCBRMTggMzcgMzQgNDIgVDY0IDQwIFY2NCBIMHoiIGZpbGw9IiM5ZmI3YTYiLz48cGF0aCBkPSJNMCA1NCBRMjAgNDggMzYgNTMgVDY0IDUyIFY2NCBIMHoiIGZpbGw9IiM4NmE1OGYiLz48cGF0aCBkPSJNMzAgNjYgQzI0IDU4IDI3IDU0IDMzIDUxIFM0MCA0NSAzNSA0MSBTMzEgMzYgMzUgMzMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZiZjdlZiIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMC4yIDQuMiIvPjxjaXJjbGUgY3g9IjM1IiBjeT0iMzIuNSIgcj0iMi40IiBmaWxsPSIjZmZmIi8+PC9nPjwvc3ZnPg==" alt="">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>
+  <div class="art">${key === "photo" ? `<div class="photo" style="background-image:url('${st.photo}')"></div><div class="photo" style="background:linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,0) 45%)"></div>`
+    : `<svg viewBox="0 -170 390 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>`}</div>
   <button class="cover-btn" id="cover-btn" type="button" aria-label="更换封面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19.5 17"/></svg></button>`;
   // the walker climbs the trail as days are recorded (reaches the far end at ~60 days)
   const trail = hero.querySelector(".trail"), walker = hero.querySelector(".walker");
@@ -479,7 +509,9 @@ function renderHero() {
     walker.setAttribute("cx", p.x.toFixed(1)); walker.setAttribute("cy", p.y.toFixed(1));
   }
   $("cover-btn").onclick = openCoverPicker;
-  if (key === "photo") { const im = new Image(); im.onload = () => { photoAspect = im.naturalWidth / im.naturalHeight; if (heroOpen) setHero(heroFull(), true); }; im.src = st.photo; }
+  setThemeColor(key === "photo" ? "#1b1d22" : SKIES[sky].s1);
+  layoutHero();
+  if (key === "photo") { const im = new Image(); im.onload = () => { photoAspect = im.naturalWidth / im.naturalHeight; layoutHero(); }; im.src = st.photo; }
 }
 function loadPhoto(file) {
   return new Promise((resolve, reject) => {
@@ -624,8 +656,7 @@ function renderWorry(animate) {
   ${clear.length ? `<div class="section"><div class="head-row"><h2>想清楚了</h2><span class="hint">${clear.length} 件</span></div><div class="list">${clear.map(worryItem).join("")}</div></div>` : ""}
   ${letgo.length ? `<div class="section"><button class="item" type="button" data-toggle="letgo" style="padding:0"><span class="main"><h2>放下了</h2></span><span class="v">${letgo.length} 件 ${ui.open.letgo ? "⌃" : "›"}</span></button>${ui.open.letgo ? `<div class="list">${letgo.map(worryItem).join("")}</div>` : ""}</div>` : ""}
   ${talks.length ? `<div class="section"><button class="item" type="button" data-toggle="talks" style="padding:0"><span class="main"><h2>以前的对话</h2></span><span class="v">${talks.length} 次 ${ui.open.talks ? "⌃" : "›"}</span></button>
-    ${ui.open.talks ? talks.map(t => `<div class="field-group"><span class="hint">${md(t.date)}</span>${(t.turns || []).map(x => `<p class="text"${x.role === "me" ? "" : ' style="color:var(--accent)"'}>${esc(x.text)}</p>`).join("")}</div>`).join("") : ""}</div>` : ""}
-  <div class="section"><p class="hint">如果你感到撑不住，请联系身边信任的人，或拨打心理援助热线 12356。</p></div>`, animate);
+    ${ui.open.talks ? talks.map(t => `<div class="field-group"><span class="hint">${md(t.date)}</span>${(t.turns || []).map(x => `<p class="text"${x.role === "me" ? "" : ' style="color:var(--accent)"'}>${esc(x.text)}</p>`).join("")}</div>`).join("") : ""}</div>` : ""}`, animate);
   grow($("vent"));
   $("vent-save").onclick = () => {
     const vent = $("vent").value.trim();
@@ -1028,35 +1059,73 @@ window.addEventListener("resize", () => {
 /* ---------- 来信 ---------- */
 function addMonths(dateStr, m) { const d = parseDate(dateStr); d.setMonth(d.getMonth() + m); return ymd(d); }
 const ymdCN = s => s.slice(0, 4) + "年" + md(s);
+const OPEN_AFTER = [[1, "1 个月"], [3, "3 个月"], [6, "半年"], [12, "1 年"]];
+let letterMonths = 6;
+const STAMP = `<svg viewBox="0 0 40 48" aria-hidden="true"><rect x="1" y="1" width="38" height="46" rx="2" fill="#fbf8f1" stroke="#c9b99a" stroke-dasharray="2 2"/><rect x="5" y="5" width="30" height="30" fill="#cfdcec"/><path d="M5 26 Q14 20 22 24 T35 22 V35 H5z" fill="#9fb7a6"/><path d="M5 31 Q16 26 24 30 T35 29 V35 H5z" fill="#86a58f"/><circle cx="28" cy="12" r="3" fill="#fbe3c8"/><text x="20" y="43" font-size="5" text-anchor="middle" fill="#9a8a6a">SEEKWAY</text></svg>`;
 function renderLetter(animate) {
   const letters = store.list("letter").sort((a, b) => a.openOn.localeCompare(b.openOn));
-  const open = letters.filter(l => l.openOn <= TODAY), sealed = letters.filter(l => l.openOn > TODAY);
+  const open = letters.filter(l => l.openOn <= TODAY).reverse(), sealed = letters.filter(l => l.openOn > TODAY);
+  const openOn = addMonths(TODAY, letterMonths);
   paint(`
   <div class="section first">
     <div><div class="kicker">写给以后的自己</div><h1>现在的困惑，过一阵子再读会是什么感觉？</h1></div>
-    <textarea class="write" id="l-body" placeholder="写写你现在在纠结什么、害怕什么、期待什么。"></textarea>
-    <div class="row between">
-      <select class="field" id="l-when" aria-label="多久后打开"><option value="1">1 个月后打开</option><option value="3">3 个月后打开</option><option value="6" selected>半年后打开</option><option value="12">1 年后打开</option></select>
-      <button class="btn primary" id="l-save" type="button">封存</button>
+    <div class="letter-paper">
+      <div class="lp-to">亲爱的以后的我：</div>
+      <textarea class="lp-body" id="l-body" placeholder="写写你现在在纠结什么、害怕什么、期待什么。"></textarea>
+      <div class="lp-sign">现在的我<br>${ymdCN(TODAY)}</div>
     </div>
+    <div class="field-group">
+      <span class="label-sm">什么时候打开</span>
+      <div class="pills" role="group" aria-label="什么时候打开">${OPEN_AFTER.map(([m, t]) => `<button type="button" data-months="${m}" aria-pressed="${m === letterMonths}">${t}</button>`).join("")}</div>
+      <p class="hint" id="l-open-on">这封信会在 ${ymdCN(openOn)} 寄到。</p>
+    </div>
+    <button class="btn primary block" id="l-save" type="button">装进信封</button>
     <p class="hint" id="save-status">${whereText()}</p>
   </div>
-  ${sealed.length ? `<div class="section"><div class="head-row"><h2>还在路上的信</h2><span class="hint">${sealed.length} 封</span></div><div class="list">${sealed.map(l => `
-    <div class="item"><i class="dot c-faint"></i><span class="main"><span class="t">${ymdCN(l.openOn)} 开启</span><span class="s">写于 ${md(l.date)}</span></span><span class="v">还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天</span></div>`).join("")}</div></div>` : ""}
-  ${open.length ? `<div class="section"><div class="head-row"><h2>可以拆开的信</h2><span class="hint">${open.length} 封</span></div><div class="list">${open.map(l => `
-    <button class="item" type="button" data-toggle="${esc(l.id)}"><i class="dot c-ans"></i><span class="main"><span class="t">写于 ${ymdCN(l.date)}</span>${ui.open[l.id] ? "" : `<span class="s">${esc(l.body)}</span>`}</span><span class="chev">${ui.open[l.id] ? "⌃" : "›"}</span></button>
-    ${ui.open[l.id] ? `<div class="field-group" style="padding-bottom:12px"><p class="text">${esc(l.body)}</p><button class="btn link danger" type="button" data-del="${esc(l.id)}" style="align-self:flex-start">删除这封信</button></div>` : ""}`).join("")}</div></div>` : ""}
-  ${!letters.length ? `<div class="section"><p class="hint">还没有信。写一封，半年后的你会收到。</p></div>` : ""}`, animate);
-  grow($("l-body"));
+  ${sealed.length ? `<div class="section"><div class="head-row"><h2>还在路上</h2><span class="hint">${sealed.length} 封</span></div>
+    <div class="envelopes">${sealed.map(l => `
+      <div class="envelope">
+        <span class="env-stamp">${STAMP}</span>
+        <span class="env-seal" aria-hidden="true"></span>
+        <div class="env-text">
+          <span class="env-to">致 以后的我</span>
+          <span class="env-date">${ymdCN(l.openOn)} 开启 · 还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天</span>
+          <span class="env-from">寄出于 ${ymdCN(l.date)}</span>
+        </div>
+        <button class="btn link danger env-del" type="button" data-del="${esc(l.id)}">删除</button>
+      </div>`).join("")}</div></div>` : ""}
+  ${open.length ? `<div class="section"><div class="head-row"><h2>已经寄到</h2><span class="hint">${open.length} 封</span></div>
+    <div class="envelopes">${open.map(l => ui.open[l.id] ? `
+      <div class="letter-paper read">
+        <div class="lp-to">亲爱的以后的我：</div>
+        <p class="lp-text">${esc(l.body)}</p>
+        <div class="lp-sign">现在的我<br>${ymdCN(l.date)}</div>
+        <div class="row between"><button class="btn link muted" type="button" data-toggle="${esc(l.id)}">折起来</button><button class="btn link danger" type="button" data-del="${esc(l.id)}">删除</button></div>
+      </div>` : `
+      <button class="envelope opened" type="button" data-toggle="${esc(l.id)}">
+        <span class="env-stamp">${STAMP}</span>
+        <div class="env-text">
+          <span class="env-to">来自 ${ymdCN(l.date)} 的你</span>
+          <span class="env-date">${ymdCN(l.openOn)} 寄到 · 点开读</span>
+        </div>
+      </button>`).join("")}</div></div>` : ""}
+  ${!letters.length ? `<div class="section"><p class="hint">还没有信。写一封，${OPEN_AFTER.find(o => o[0] === letterMonths)[1]}后的你会收到。</p></div>` : ""}`, animate);
+  const body = $("l-body");
+  body.addEventListener("input", () => autogrow(body)); requestAnimationFrame(() => autogrow(body));
+  view.querySelectorAll("[data-months]").forEach(b => b.onclick = () => {
+    letterMonths = +b.dataset.months;
+    view.querySelectorAll("[data-months]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    $("l-open-on").textContent = `这封信会在 ${ymdCN(addMonths(TODAY, letterMonths))} 寄到。`;
+  });
   $("l-save").onclick = () => {
-    const body = $("l-body").value.trim();
-    if (!body) { $("l-body").focus(); return; }
+    const text = body.value.trim();
+    if (!text) { body.focus(); return; }
     const at = Date.now();
-    put("l-" + at, { type: "letter", at, date: TODAY, body, openOn: addMonths(TODAY, +$("l-when").value) }).catch(() => {});
+    put("l-" + at, { type: "letter", at, date: TODAY, body: text, openOn: addMonths(TODAY, letterMonths) }).catch(() => {});
     renderLetter();
   };
   view.querySelectorAll("[data-toggle]").forEach(b => b.onclick = () => { ui.open[b.dataset.toggle] = !ui.open[b.dataset.toggle]; renderLetter(); });
-  view.querySelectorAll("[data-del]").forEach(b => b.onclick = () => arm(b, "再点一次删除", () => { store.remove(b.dataset.del).catch(() => {}); renderLetter(); }));
+  view.querySelectorAll("[data-del]").forEach(b => b.onclick = e => { e.stopPropagation(); arm(b, "确定删除？", () => { store.remove(b.dataset.del).catch(() => {}); renderLetter(); }); });
 }
 
 /* ---------- shell ---------- */
@@ -1081,7 +1150,7 @@ if (window.claude && window.claude.use) {
     const row = $("mirror-row"); if (fn && row) row.hidden = false;
   }).catch(() => {});
 }
-/* ---------- phone fit: no zooming, and the cover opens up when pulled down ---------- */
+/* ---------- phone fit: no zooming, edge-to-edge cover, pull down to open it, haptics ---------- */
 (function lockZoom() {
   let m = document.querySelector('meta[name="viewport"]');
   if (!m) { m = document.createElement("meta"); m.name = "viewport"; document.head.appendChild(m); }
@@ -1089,45 +1158,92 @@ if (window.claude && window.claude.use) {
   ["gesturestart", "gesturechange"].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
   document.addEventListener("touchmove", e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 })();
-const HERO_BASE = 250;
-let heroOpen = false, photoAspect = 0;
+// a light tap: vibrate where supported; on iPhone Safari, toggling a hidden switch gives a system haptic
+const haptic = (() => {
+  let lbl = null;
+  return () => {
+    try { if (navigator.vibrate && navigator.vibrate(8)) return; } catch (e) {}
+    try {
+      if (!lbl) {
+        lbl = document.createElement("label");
+        lbl.setAttribute("aria-hidden", "true");
+        lbl.style.cssText = "position:fixed;left:-200px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
+        const i = document.createElement("input"); i.type = "checkbox"; i.setAttribute("switch", ""); i.tabIndex = -1;
+        lbl.appendChild(i); document.body.appendChild(lbl);
+      }
+      lbl.click();
+    } catch (e) {}
+  };
+})();
+document.addEventListener("click", e => {
+  if (e.target.closest(".btn.primary, .tabbar button, .chip, .seg button, .cover-opt, .rstop:not([disabled]), #s-done, #s-letgo, #vent-save, .x")) haptic();
+}, true);
+function setThemeColor(c) {
+  let m = document.querySelector('meta[name="theme-color"]:not([media])');
+  if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.appendChild(m); }
+  m.content = c;
+}
+const safeTop = (() => { const d = document.createElement("div"); d.style.cssText = "position:fixed;top:0;height:env(safe-area-inset-top,0px);visibility:hidden"; document.documentElement.appendChild(d); const h = d.getBoundingClientRect().height; d.remove(); return h; })();
+const HERO_BASE = 250 + safeTop;
+let heroOpen = false, photoAspect = 0, pullNow = 0;
 function heroFull() {
   const w = $("hero").clientWidth, st = settings();
-  const natural = st.cover === "photo" && st.photo && photoAspect ? w / photoAspect : w * 400 / 390;
-  return Math.max(HERO_BASE + 60, Math.min(natural, window.innerHeight * 0.8));
+  const natural = (st.cover === "photo" && st.photo && photoAspect ? w / photoAspect : w * 400 / 390) + safeTop;
+  return Math.round(Math.max(HERO_BASE + 80, Math.min(natural, window.innerHeight * 0.82)));
 }
-function setHero(h, animate) {
-  const el = $("hero");
-  el.classList.toggle("dragging", !animate);
-  el.style.height = Math.round(h) + "px";
-  el.classList.toggle("open", h > HERO_BASE + 30);
+function layoutHero() {
+  const app = document.querySelector(".app"), full = heroFull();
+  app.style.setProperty("--hero-full", full + "px");
+  app.style.setProperty("--hero-base", HERO_BASE + "px");
+  applyPull(heroOpen ? full - HERO_BASE : 0, false);
 }
-function toggleHero(open) { heroOpen = open; setHero(open ? heroFull() : HERO_BASE, true); }
+// p = how far the sheet has slid down; the artwork slides with it, so more of the cover shows from the top
+function applyPull(p, settle) {
+  const app = document.querySelector(".app"), art = document.querySelector(".hero .art");
+  const range = heroFull() - HERO_BASE;
+  pullNow = p;
+  app.classList.toggle("settling", !!settle);
+  if (art) art.style.transform = `translate3d(0, ${Math.min(0, p - range)}px, 0)`;
+  $("view").style.transform = p ? `translate3d(0, ${p}px, 0)` : "";
+  $("hero").classList.toggle("open", p > 40);
+  const pb = heroOpen ? `calc(84px + env(safe-area-inset-bottom, 0px) + ${range}px)` : "";
+  if (app.style.paddingBottom !== pb) app.style.paddingBottom = pb;
+}
+function toggleHero(open) { if (open !== heroOpen) haptic(); heroOpen = open; applyPull(open ? heroFull() - HERO_BASE : 0, true); }
 (function pullToOpen() {
-  let y0 = null, dy = 0;
+  let y0 = null, dy = 0, raf = 0, crossed = false;
   const blocked = t => $("sheet-wrap") || (t && t.closest && t.closest("textarea, input, select, button, .tabbar"));
+  const frame = () => {
+    raf = 0;
+    const range = heroFull() - HERO_BASE;
+    let p = (heroOpen ? range : 0) + dy;
+    if (p > range) p = range + (p - range) * 0.25;   // rubber band past the full cover
+    if (p < 0) p = 0;
+    applyPull(p, false);
+    const past = heroOpen ? dy < -50 : dy > 70;
+    if (past !== crossed) { crossed = past; if (past) haptic(); }
+  };
   window.addEventListener("touchstart", e => {
-    if (e.touches.length !== 1 || window.scrollY > 0 || blocked(e.target)) { y0 = null; return; }
-    y0 = e.touches[0].clientY; dy = 0;
+    if (e.touches.length !== 1 || window.scrollY > 2 || blocked(e.target)) { y0 = null; return; }
+    y0 = e.touches[0].clientY; dy = 0; crossed = false;
   }, { passive: true });
   window.addEventListener("touchmove", e => {
     if (y0 === null) return;
     dy = e.touches[0].clientY - y0;
-    if (window.scrollY > 0 || (dy < 0 && !heroOpen)) { y0 = null; setHero(heroOpen ? heroFull() : HERO_BASE, true); return; }
+    if (!heroOpen && dy < 0) { y0 = null; return; }      // a normal scroll down the page
     e.preventDefault();
-    const base = heroOpen ? heroFull() : HERO_BASE;
-    const pull = dy > 0 ? Math.min(dy * 0.6, heroFull() + 40 - base) : dy;
-    setHero(Math.max(HERO_BASE, base + pull), false);
+    if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
-  window.addEventListener("touchend", () => {
+  const end = () => {
     if (y0 === null) return;
-    y0 = null;
-    if (!heroOpen && dy > 70) toggleHero(true);
-    else if (heroOpen && dy < -50) toggleHero(false);
-    else toggleHero(heroOpen);
-  });
+    y0 = null; cancelAnimationFrame(raf); raf = 0;
+    const open = heroOpen ? !(dy < -50) : dy > 70;
+    if (open !== heroOpen) toggleHero(open); else applyPull(open ? heroFull() - HERO_BASE : 0, true);
+  };
+  window.addEventListener("touchend", end);
+  window.addEventListener("touchcancel", end);
   $("hero").addEventListener("click", e => { if (!e.target.closest("button")) toggleHero(!heroOpen); });
-  window.addEventListener("resize", () => setHero(heroOpen ? heroFull() : HERO_BASE, false));
+  window.addEventListener("resize", () => layoutHero());
 })();
 renderHero();
 store.init().then(() => { renderHero(); show(ui.tab); });
