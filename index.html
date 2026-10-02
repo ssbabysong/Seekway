@@ -56,7 +56,7 @@ button { font: inherit; color: inherit; }
 
 /* landscape */
 .hero { position: relative; height: 200px; overflow: hidden; }
-.hero svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero[data-sky="day"]   { --s1: #cfdcec; --s2: #f3ece3; --sun: #fbe3c8; --h0: #c9d4e0; --h1: #b9c9d8; --h2: #9fb7a6; --h3: #86a58f; --path: #f6f1e8; --star: transparent; }
 .hero[data-sky="dawn"]  { --s1: #dbe3f0; --s2: #fbe6d6; --sun: #ffd9b8; --h0: #ccd3e2; --h1: #bcc8d9; --h2: #a3b9aa; --h3: #8aa793; --path: #fbf3ea; --star: transparent; }
 .hero[data-sky="dusk"]  { --s1: #d4cbe5; --s2: #f8d9c7; --sun: #ffcfac; --h0: #c4bdd4; --h1: #b3afc8; --h2: #98a5a6; --h3: #7d9286; --path: #fbeee2; --star: transparent; }
@@ -166,7 +166,49 @@ button.item:active { opacity: .6; }
 .panel .scroll { overflow-y: auto; padding: 8px 20px calc(30px + env(safe-area-inset-bottom, 0px)); }
 .step-n { font-size: 13px; color: var(--accent); font-weight: 600; }
 
+/* cover */
+.cover-btn { position: absolute; right: 14px; top: calc(10px + env(safe-area-inset-top, 0px)); width: 34px; height: 34px; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer; color: #2b3038; background: rgba(255, 255, 255, .55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.cover-btn svg { width: 18px; height: 18px; }
+.hero[data-sky="night"] .cover-btn, .hero[data-sky="photo"] .cover-btn { color: #fff; background: rgba(0, 0, 0, .28); }
+.hero[data-sky="photo"] .steps { color: rgba(255, 255, 255, .9); text-shadow: 0 1px 6px rgba(0, 0, 0, .35); }
+.panel.small { height: auto; max-height: calc(100% - 24px - env(safe-area-inset-top, 0px)); }
+.covers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cover-opt { border: 0; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); text-align: left; }
+.cover-opt svg, .cover-opt .cover-add { width: 100%; aspect-ratio: 390 / 200; border-radius: 14px; display: block; outline: 2px solid transparent; outline-offset: 2px; transition: outline-color .15s; }
+.cover-opt .cover-add { display: grid; place-items: center; background: var(--fill); color: var(--muted); font-size: 26px; }
+.cover-opt[aria-pressed="true"] svg, .cover-opt[aria-pressed="true"] .cover-add { outline-color: var(--accent); }
+.cover-opt[aria-pressed="true"] { color: var(--accent); font-weight: 500; }
+
+/* road */
+:root { --road: #eef0ec; --road-line: #c6ccc2; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --road: #23272a; --road-line: #4a524c; } }
+:root[data-theme="dark"] { --road: #23272a; --road-line: #4a524c; }
+.seg.plain button[aria-pressed="true"] { background: var(--bg); color: var(--ink); font-weight: 500; box-shadow: 0 1px 4px rgba(0, 0, 0, .08); }
+.road { position: relative; margin-top: 6px; }
+.road > svg { position: absolute; inset: 0; overflow: visible; }
+.rstop { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border: 0; background: none; padding: 0; display: grid; place-items: center; cursor: pointer; }
+.rstop[disabled] { cursor: default; }
+.rnode { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--bg); display: grid; place-items: center; transition: transform .15s; }
+.rstop:not([disabled]):active .rnode { transform: scale(.85); }
+.rnode.tone-up { background: var(--warm); }
+.rnode.tone-down { background: var(--cool); }
+.rnode.has-worry { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--rose); }
+.rnode.here { width: 20px; height: 20px; background: var(--accent); box-shadow: 0 0 0 4px var(--bg), 0 0 0 9px var(--accent-soft); }
+.rnode.week, .rnode.start { width: 30px; height: 30px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); }
+.rnode.start { background: var(--fill); color: var(--muted); }
+.rnode svg { width: 17px; height: 17px; }
+.rlabel { position: absolute; transform: translateY(-50%); display: flex; flex-direction: column; gap: 1px; }
+.rlabel.l { text-align: right; align-items: flex-end; }
+.rlabel .rt { font-size: 13px; color: var(--muted); }
+.rlabel .rb { font-size: 15px; color: var(--ink); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+
 @media (prefers-reduced-motion: no-preference) {
+  .rnode.here { animation: breathe 2.6s ease-in-out infinite; }
+  @keyframes breathe { 50% { box-shadow: 0 0 0 4px var(--bg), 0 0 0 13px var(--accent-soft); } }
+  .pop { animation: pop .45s cubic-bezier(.2, .9, .3, 1.2) both; }
+  @keyframes pop { from { transform: translateY(-50%) scale(.7); } }
+  .rstop.pop { animation-name: popnode; }
+  @keyframes popnode { from { transform: scale(.4); } }
   .sheet.enter { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; }
   .hero svg .walker { animation: pulse 2.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
   @keyframes rise { from { transform: translateY(18px); } to { transform: none; } }
@@ -336,34 +378,146 @@ function skyNow() {
   if (h >= 17) return "dusk";
   return "day";
 }
+/* ---------- the cover: built-in scenes or the viewer's own photo ---------- */
+const SKIES = {
+  dawn:  { s1: "#dbe3f0", s2: "#fbe6d6", sun: "#ffd9b8" },
+  day:   { s1: "#cfdcec", s2: "#f3ece3", sun: "#fbe3c8" },
+  dusk:  { s1: "#d4cbe5", s2: "#f8d9c7", sun: "#ffcfac" },
+  night: { s1: "#1c2537", s2: "#39405a", sun: "#ebe6d2" }
+};
+const pines = (list, color) => list.map(([x, y, s]) => `<path d="M${x} ${y - 22 * s} L${x - 8 * s} ${y} L${x + 8 * s} ${y}z" fill="${color}"/>`).join("");
+const SCENES = {
+  mountain: { name: "山间", path: "M205 232 C 160 214, 170 200, 200 192 S 236 172, 214 160 S 196 140, 212 128", pathColor: "#f6f1e8",
+    ground: `<path d="M0 140 L60 112 L110 130 L170 96 L230 124 L290 104 L390 132 V230 H0z" fill="#c9d4e0" opacity=".75"/>
+      <path d="M0 150 Q80 118 160 142 T390 128 V230 H0z" fill="#b9c9d8"/>
+      <path d="M0 176 Q100 146 200 168 T390 160 V230 H0z" fill="#9fb7a6"/>
+      <path d="M0 202 Q110 178 210 198 T390 196 V230 H0z" fill="#86a58f"/>` },
+  sea: { name: "海边", path: "M150 232 C 120 214, 70 206, 84 192 S 140 178, 168 164", pathColor: "#fbf6ec",
+    ground: `<rect y="140" width="390" height="90" fill="#9cc3d5"/>
+      <path d="M0 140 H390" stroke="#d8e8ef" stroke-width="1.5"/>
+      <path d="M0 160 Q60 156 120 160 T240 160 T390 158" stroke="#bcd8e4" stroke-width="1.2" fill="none"/>
+      <path d="M262 140 Q282 124 304 140z" fill="#86a9ba"/>
+      <rect x="296" y="120" width="5" height="20" fill="#f4efe6"/><rect x="295" y="117" width="7" height="4" fill="#d98b78"/>
+      <path d="M0 168 C 70 158, 150 170, 200 190 S 300 226, 390 232 V232 H0z" fill="#efe2cc"/>
+      <path d="M0 168 C 70 158, 150 170, 200 190 S 300 226, 390 232" fill="none" stroke="#f9f4ea" stroke-width="2.5"/>` },
+  forest: { name: "森林", path: "M200 232 C 170 214, 180 204, 205 196 S 232 180, 212 168 S 198 152, 214 144", pathColor: "#f3eee2",
+    ground: `<path d="M0 150 Q100 120 200 140 T390 130 V230 H0z" fill="#b7c9b5"/>
+      ${pines([[30, 150, .8], [62, 140, 1], [96, 136, .9], [280, 136, .9], [318, 132, 1.1], [356, 134, .8]], "#8fae95")}
+      <path d="M0 172 Q110 148 220 166 T390 160 V230 H0z" fill="#8fae95"/>
+      ${pines([[24, 176, 1.2], [58, 168, 1.4], [128, 166, 1], [282, 166, 1.2], [322, 162, 1.5], [366, 166, 1.1]], "#5f8a6b")}
+      <path d="M0 198 Q110 178 210 196 T390 192 V230 H0z" fill="#6f9479"/>
+      ${pines([[40, 204, 1.6], [100, 196, 1.3], [300, 198, 1.5], [350, 202, 1.7]], "#4f7a5c")}` },
+  field: { name: "麦田", path: "M195 232 C 160 216, 175 204, 200 196 S 228 182, 210 170 S 196 156, 210 148", pathColor: "#fbf4e2",
+    ground: `<path d="M0 148 Q100 128 200 144 T390 136 V230 H0z" fill="#d9d1a8"/>
+      <circle cx="318" cy="128" r="11" fill="#9fae7c"/><rect x="316" y="136" width="3" height="10" fill="#8a7a5a"/>
+      <path d="M0 170 Q110 150 210 166 T390 160 V230 H0z" fill="#ead39a"/>
+      <path d="M0 196 Q110 176 210 194 T390 190 V230 H0z" fill="#dfbd73"/>
+      <path d="M0 210 Q110 192 210 208 T390 206 M0 222 Q110 204 210 220 T390 218" stroke="#e9cb88" stroke-width="2" fill="none"/>` },
+  snow: { name: "雪山", path: "M205 232 C 165 214, 172 202, 200 194 S 234 178, 214 166 S 198 150, 212 142", pathColor: "#9fb0c4",
+    ground: `<path d="M0 150 L50 112 L90 136 L150 86 L200 128 L260 96 L320 130 L390 106 V230 H0z" fill="#c4cfdd"/>
+      <path d="M138 98 L150 86 L162 98 L156 96 L150 101 L144 96z M250 106 L260 96 L270 106 L264 104 L260 108 L256 104z" fill="#ffffff"/>
+      <path d="M0 160 Q90 136 180 152 T390 140 V230 H0z" fill="#eef2f7"/>
+      <path d="M0 184 Q100 160 200 176 T390 170 V230 H0z" fill="#e2e8f0"/>
+      <path d="M0 206 Q110 186 210 202 T390 200 V230 H0z" fill="#d5dde8"/>` }
+};
+function settings() { return store.docs["s-settings"] || { type: "settings", cover: "mountain", photo: "" }; }
+function sceneMarkup(key, sky, withWalker) {
+  const k = SKIES[sky], st = settings();
+  const night = sky === "night";
+  const stars = night ? [[40, 30], [90, 55], [140, 22], [260, 40], [320, 20], [360, 60], [300, 75], [60, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="#e9ecf5"/>`).join("") : "";
+  const gid = "sky-" + key + "-" + Math.random().toString(36).slice(2, 7);
+  if (key === "photo" && st.photo) {
+    return `<image href="${st.photo}" x="0" y="0" width="390" height="230" preserveAspectRatio="xMidYMid slice"/>
+      <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".45" stop-color="#000" stop-opacity="0"/></linearGradient></defs>
+      <rect width="390" height="230" fill="url(#${gid})"/>`;
+  }
+  const s = SCENES[key] || SCENES.mountain;
+  return `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${k.s1}"/><stop offset="1" stop-color="${k.s2}"/></linearGradient></defs>
+    <rect width="390" height="230" fill="url(#${gid})"/>${stars}
+    <circle cx="${sky === "dusk" ? 90 : 300}" cy="${sky === "dusk" ? 112 : 66}" r="20" fill="${k.sun}" opacity=".95"/>
+    ${s.ground}
+    ${night ? `<rect width="390" height="230" fill="#0e1630" opacity=".45"/>` : ""}
+    <path class="trail" d="${s.path}" fill="none" stroke="${s.pathColor}" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.5 8" opacity=".95"/>
+    ${withWalker ? `<circle class="walker" r="4.2" fill="#fff"/>` : ""}`;
+}
 function renderHero() {
   const hero = $("hero");
-  const sky = skyNow();
-  hero.dataset.sky = sky;
-  // the walker climbs the path as days are recorded (reaches the top at ~60 days)
+  const sky = skyNow(), st = settings();
+  const key = st.cover === "photo" && st.photo ? "photo" : (SCENES[st.cover] ? st.cover : "mountain");
+  hero.dataset.sky = key === "photo" ? "photo" : sky;
   const n = steps();
-  const t = Math.min(1, 0.15 + n / 70);
-  const P = [[205, 230], [170, 205], [230, 178], [190, 150], [212, 128]];
-  const seg = t * (P.length - 1), i = Math.min(P.length - 2, Math.floor(seg)), f = seg - i;
-  const wx = P[i][0] + (P[i + 1][0] - P[i][0]) * f, wy = P[i][1] + (P[i + 1][1] - P[i][1]) * f;
-  const stars = sky === "night" ? [[40, 30], [90, 55], [140, 22], [260, 40], [320, 20], [360, 60], [300, 75], [60, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="var(--star)"/>`).join("") : "";
   hero.innerHTML = `
-  <svg viewBox="0 0 390 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--s1)"/><stop offset="1" stop-color="var(--s2)"/></linearGradient></defs>
-    <rect width="390" height="230" fill="url(#sky)"/>
-    ${stars}
-    <circle cx="${sky === "dusk" ? 90 : 300}" cy="${sky === "dusk" ? 112 : 66}" r="20" fill="var(--sun)" opacity=".95"/>
-    <path d="M0 140 L60 112 L110 130 L170 96 L230 124 L290 104 L390 132 V230 H0z" fill="var(--h0)" opacity=".7"/>
-    <path d="M0 150 Q80 118 160 142 T390 128 V230 H0z" fill="var(--h1)"/>
-    <path d="M0 176 Q100 146 200 168 T390 160 V230 H0z" fill="var(--h2)"/>
-    <path d="M0 202 Q110 178 210 198 T390 196 V230 H0z" fill="var(--h3)"/>
-    <path d="M205 232 C 160 214, 170 200, 200 192 S 236 172, 214 160 S 196 140, 212 128" fill="none" stroke="var(--path)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.5 8" opacity=".95"/>
-    <circle class="walker" cx="${wx.toFixed(1)}" cy="${wy.toFixed(1)}" r="4.2" fill="#fff"/>
-  </svg>
-  <span class="steps">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>`;
+  <svg viewBox="0 0 390 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(key, sky, true)}</svg>
+  <span class="steps">Seekway · ${n ? "已走 " + n + " 步" : "从今天出发"}</span>
+  <button class="cover-btn" id="cover-btn" type="button" aria-label="更换封面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19.5 17"/></svg></button>`;
+  // the walker climbs the trail as days are recorded (reaches the far end at ~60 days)
+  const trail = hero.querySelector(".trail"), walker = hero.querySelector(".walker");
+  if (trail && walker) {
+    const len = trail.getTotalLength(), t = Math.min(1, 0.18 + n / 70);
+    const p = trail.getPointAtLength(len * t);
+    walker.setAttribute("cx", p.x.toFixed(1)); walker.setAttribute("cy", p.y.toFixed(1));
+  }
+  $("cover-btn").onclick = openCoverPicker;
+}
+function loadPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const s = Math.min(1, 1000 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      let q = .82, out = c.toDataURL("image/jpeg", q);
+      while (out.length > 190000 && q > .35) { q -= .1; out = c.toDataURL("image/jpeg", q); }
+      URL.revokeObjectURL(url);
+      out.length > 230000 ? reject(new Error("too_big")) : resolve(out);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("unreadable")); };
+    img.src = url;
+  });
+}
+function openCoverPicker() {
+  const st = settings(), sky = skyNow();
+  const cur = st.cover === "photo" && st.photo ? "photo" : st.cover;
+  document.body.classList.add("locked");
+  $("sheet-root").innerHTML = `
+  <div class="sheet-wrap" id="sheet-wrap">
+    <div class="panel small" role="dialog" aria-modal="true" aria-labelledby="cover-title">
+      <div class="bar"><span></span><span class="ttl" id="cover-title">封面</span><span class="r"><button id="c-done" type="button">完成</button></span></div>
+      <div class="scroll">
+        <p class="hint" style="margin-bottom:14px">天空会跟着时间变，早晨、白天、傍晚和夜里各不一样。</p>
+        <div class="covers">
+          ${Object.entries(SCENES).map(([k, s]) => `<button class="cover-opt" type="button" data-cover="${k}" aria-pressed="${cur === k}"><svg viewBox="0 30 390 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup(k, sky, false)}</svg><span>${s.name}</span></button>`).join("")}
+          <button class="cover-opt" type="button" data-cover="photo" aria-pressed="${cur === "photo"}">
+            ${st.photo ? `<svg viewBox="0 30 390 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${sceneMarkup("photo", sky, false)}</svg>` : `<span class="cover-add">＋</span>`}
+            <span>${st.photo ? "我的照片" : "用自己的照片"}</span></button>
+        </div>
+        ${st.photo ? `<div class="row between" style="margin-top:14px"><button class="btn link" id="c-replace" type="button">换一张照片</button><button class="btn link danger" id="c-remove" type="button">移除照片</button></div>` : ""}
+        <p class="hint" id="c-status" style="margin-top:10px"></p>
+        <input type="file" id="c-file" accept="image/*" hidden>
+      </div>
+    </div>
+  </div>`;
+  const save = next => { put("s-settings", { ...settings(), ...next }).catch(() => {}); renderHero(); };
+  const pickFile = () => $("c-file").click();
+  $("sheet-root").querySelectorAll("[data-cover]").forEach(b => b.onclick = () => {
+    if (b.dataset.cover === "photo" && !settings().photo) return pickFile();
+    save({ cover: b.dataset.cover });
+    $("sheet-root").querySelectorAll("[data-cover]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  });
+  $("c-file").onchange = async e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    $("c-status").textContent = "正在处理照片…";
+    try { save({ cover: "photo", photo: await loadPhoto(f) }); closeSheet(); }
+    catch (err) { $("c-status").textContent = "这张照片读不出来，换一张试试。"; }
+  };
+  if ($("c-replace")) $("c-replace").onclick = pickFile;
+  if ($("c-remove")) $("c-remove").onclick = () => { save({ cover: "mountain", photo: "" }); closeSheet(); };
+  $("c-done").onclick = closeSheet;
+  $("sheet-wrap").addEventListener("click", e => { if (e.target.id === "sheet-wrap") closeSheet(); });
 }
 
-const ui = { tab: "today", weekStart: mondayOf(TODAY), open: {} };
+const ui = { tab: "today", weekStart: mondayOf(TODAY), open: {}, reviewMode: "road" };
 try { ui.tab = sessionStorage.getItem("seekway-tab") || "today"; } catch (e) {}
 const view = $("view");
 let sampleFn = null;
@@ -584,7 +738,7 @@ const MIRROR_RULES = `你在陪一个人做每周回顾。下面是对方这一�
 以下是记录：
 `;
 
-function renderReview(animate) {
+function renderWeek(animate) {
   const start = ui.weekStart, end = addDays(start, 6);
   const isThisWeek = start === mondayOf(TODAY);
   const { dates, days, ws } = weekData(start);
@@ -602,6 +756,7 @@ function renderReview(animate) {
 
   paint(`
   <div class="section first">
+    ${reviewSwitch()}
     <div class="head-row">
       <div><div class="kicker">${md(start)} – ${md(end)}</div><h1>${isThisWeek ? "这一周" : "那一周"}</h1></div>
       <div class="weeknav"><button id="prev" type="button" aria-label="上一周">‹</button><button id="next" type="button" aria-label="下一周" ${isThisWeek ? "disabled" : ""}>›</button></div>
@@ -657,6 +812,7 @@ function renderReview(animate) {
       ${w.pattern ? `<p class="text"><span class="hint">一个重复　</span>${esc(w.pattern)}</p>` : ""}
       ${w.note ? `<p class="text"><span class="hint">对自己说　</span>${esc(w.note)}</p>` : ""}</div>`).join("") : ""}</div>` : ""}`, animate);
 
+  bindSwitch();
   $("prev").onclick = () => { ui.weekStart = addDays(ui.weekStart, -7); renderReview(); };
   $("next").onclick = () => { if (!isThisWeek) { ui.weekStart = addDays(ui.weekStart, 7); renderReview(); } };
   [["r-moment", "moment"], ["r-pattern", "pattern"], ["r-note", "note"]].forEach(([elId, key]) => {
@@ -693,6 +849,145 @@ function renderReview(animate) {
     }
   };
 }
+
+/* ---------- 回顾 · 一路走来 ---------- */
+function roadStops() {
+  const byDate = {};
+  const at = date => (byDate[date] = byDate[date] || { kind: "day", date, day: null, worries: [], letters: [] });
+  store.list("day").filter(hasDay).forEach(d => { at(d.date).day = d; });
+  worries().forEach(w => at(w.date).worries.push(w));
+  store.list("letter").forEach(l => at(l.date).letters.push(l));
+  const stops = Object.values(byDate);
+  // number the days that have a record, oldest first
+  stops.filter(s => s.day).sort((a, b) => a.date.localeCompare(b.date)).forEach((s, i) => { s.step = i + 1; });
+  store.list("week").filter(w => w.moment || w.pattern || w.note || w.ai).forEach(w => {
+    const end = addDays(w.start, 6);
+    stops.push({ kind: "week", date: end > TODAY ? TODAY : end, week: w });
+  });
+  // newest first; a week's flag stands just above the days of that week
+  stops.sort((a, b) => b.date.localeCompare(a.date) || (a.kind === "week" ? -1 : 1));
+  return stops;
+}
+function stopSnippet(s) {
+  if (s.kind === "week") return s.week.note || s.week.moment || s.week.pattern || "写给这一周的话";
+  if (s.day && s.day.answer && s.day.answer.trim()) return s.day.answer.trim();
+  if (s.worries.length) return s.worries[0].fact || s.worries[0].vent;
+  if (s.day && (s.day.energy || []).length) return s.day.energy.map(e => (e.kind === "up" ? "↑ " : "↓ ") + e.text).join("　");
+  if (s.letters.length) return "写了一封给以后的信";
+  return "";
+}
+function stopTone(s) {
+  if (s.kind === "week") return "week";
+  const e = (s.day && s.day.energy) || [];
+  const up = e.filter(x => x.kind === "up").length, down = e.filter(x => x.kind === "down").length;
+  return up > down ? "up" : down > up ? "down" : "calm";
+}
+let roadResize;
+function renderRoad(animate) {
+  const stops = roadStops();
+  const todayStop = stops.find(s => s.kind === "day" && s.date === TODAY);
+  const list = [{ kind: "here", date: TODAY, stop: todayStop }, ...stops.filter(s => s !== todayStop)];
+  const first = stops.filter(s => s.kind === "day").map(s => s.date).sort()[0];
+  list.push({ kind: "start", date: first || TODAY });
+  paint(`
+  <div class="section first">
+    ${reviewSwitch()}
+    <div><div class="kicker">${first ? "从 " + md(first) + " 到今天" : "从今天开始"}</div><h1>一路走来</h1></div>
+    <p class="hint">${stops.filter(s => s.day).length ? `你已经走了 ${stops.filter(s => s.day).length} 步。点路上的任意一站，回到那一天。` : "每记录一天，路上就多一站。"}</p>
+    <div class="road" id="road"></div>
+  </div>`, animate);
+  const road = $("road");
+  const W = road.clientWidth, gap = 104, top = 34;
+  const pts = list.map((_, i) => [W / 2 + Math.sin(i * 0.95 + 0.5) * W * 0.27, top + i * gap]);
+  const H = top + (list.length - 1) * gap + 60;
+  let d = `M${pts[0][0]} ${pts[0][1] - 30} L${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
+  }
+  road.style.height = H + "px";
+  road.innerHTML = `
+    <svg width="${W}" height="${H}" aria-hidden="true">
+      <path class="road-bed" d="${d}" fill="none" stroke="var(--road)" stroke-width="16" stroke-linecap="round"/>
+      <path class="road-line" d="${d}" fill="none" stroke="var(--road-line)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 9"/>
+    </svg>
+    ${list.map((s, i) => {
+      const [x, y] = pts[i], right = x < W / 2;
+      const lw = right ? W - x - 26 : x - 26;
+      const pos = right ? `left:${x + 22}px` : `right:${W - x + 22}px`;
+      let node, title, body = "";
+      if (s.kind === "here") {
+        node = `<span class="rnode here"></span>`;
+        title = `今天 · 你在这里`;
+        body = s.stop ? stopSnippet(s.stop) : "今天还没有记录";
+      } else if (s.kind === "start") {
+        node = `<span class="rnode start">${ICON_FLAG}</span>`;
+        title = `出发 · ${md(s.date)}`;
+        body = "一切从这里开始";
+      } else if (s.kind === "week") {
+        node = `<span class="rnode week">${ICON_FLAG}</span>`;
+        title = `${md(s.week.start)} 那一周的复盘`;
+        body = stopSnippet(s);
+      } else {
+        node = `<span class="rnode tone-${stopTone(s)}${s.worries.length ? " has-worry" : ""}"></span>`;
+        title = `${md(s.date)}${s.step ? " · 第 " + s.step + " 步" : ""}`;
+        body = stopSnippet(s);
+      }
+      const clickable = s.kind !== "start" && !(s.kind === "here" && !s.stop);
+      return `<button class="rstop" type="button" style="top:${y}px;left:${x}px" ${clickable ? `data-stop="${i}"` : "disabled"} aria-label="${esc(title)}">${node}</button>
+        <div class="rlabel ${right ? "r" : "l"}" style="top:${y}px;${pos};width:${Math.max(90, lw)}px">
+          <span class="rt">${esc(title)}</span>${body ? `<span class="rb">${esc(body)}</span>` : ""}
+        </div>`;
+    }).join("")}`;
+  if (animate && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const bed = road.querySelector(".road-bed"), len = bed.getTotalLength();
+    bed.style.strokeDasharray = len; bed.style.strokeDashoffset = len;
+    requestAnimationFrame(() => { bed.style.transition = "stroke-dashoffset 1.1s cubic-bezier(.3,.7,.2,1)"; bed.style.strokeDashoffset = 0; });
+    road.querySelectorAll(".rstop, .rlabel").forEach((el, i) => { el.style.animationDelay = Math.min(i * 40, 600) + "ms"; el.classList.add("pop"); });
+  }
+  road.querySelectorAll("[data-stop]").forEach(b => b.onclick = () => {
+    const s = list[+b.dataset.stop];
+    if (s.kind === "week") { ui.weekStart = s.week.start; ui.reviewMode = "week"; renderReview(true); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    openDaySheet(s.kind === "here" ? s.stop : s);
+  });
+  road.querySelectorAll(".rlabel").forEach((l, i) => { const b = road.querySelectorAll(".rstop")[i]; if (!b.disabled) { l.style.cursor = "pointer"; l.onclick = () => b.click(); } });
+  bindSwitch();
+}
+const ICON_FLAG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4M6 4h10l-2 4 2 4H6"/></svg>`;
+function openDaySheet(s) {
+  const d = s.day;
+  document.body.classList.add("locked");
+  $("sheet-root").innerHTML = `
+  <div class="sheet-wrap" id="sheet-wrap">
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="day-title">
+      <div class="bar"><span></span><span class="ttl" id="day-title">${md(s.date)} ${weekdayCN(s.date)}</span><span class="r"><button id="d-close" type="button">完成</button></span></div>
+      <div class="scroll">
+        <div class="section first"><div class="kicker">${s.step ? "第 " + s.step + " 步 · " : ""}${ago(s.date)}</div></div>
+        ${d && d.answer && d.answer.trim() ? `<div class="section first"><h2>${esc(QUESTIONS[d.q])}</h2><p class="text">${esc(d.answer)}</p>
+          ${(d.later || []).map(l => `<div class="field-group"><span class="hint">${md(l.date)} 再看</span><p class="text">${esc(l.text)}</p></div>`).join("")}</div>` : ""}
+        ${d && (d.energy || []).length ? `<div class="section"><h2>那天的能量</h2><div class="chips">${d.energy.map(e => `<span class="tag ${e.kind}" style="padding-right:12px">${e.kind === "up" ? "↑" : "↓"} ${esc(e.text)}</span>`).join("")}</div></div>` : ""}
+        ${s.worries.length ? `<div class="section"><h2>那天的心事</h2><div class="list">${s.worries.map(worryItem).join("")}</div></div>` : ""}
+        ${s.letters.length ? `<div class="section"><h2>那天写的信</h2>${s.letters.map(l => `<p class="text">${l.openOn > TODAY ? `封存中，${ymdCN(l.openOn)} 开启` : esc(l.body)}</p>`).join("")}</div>` : ""}
+      </div>
+    </div>
+  </div>`;
+  $("d-close").onclick = closeSheet;
+  $("sheet-wrap").addEventListener("click", e => { if (e.target.id === "sheet-wrap") closeSheet(); });
+  $("sheet-root").querySelectorAll("[data-open]").forEach(b => b.onclick = () => { closeSheet(); openWorrySheet(b.dataset.open, () => renderReview()); });
+}
+function reviewSwitch() {
+  return `<div class="seg plain" role="group" aria-label="回顾方式" style="align-self:flex-start">
+    <button type="button" data-mode="road" aria-pressed="${ui.reviewMode === "road"}">一路走来</button>
+    <button type="button" data-mode="week" aria-pressed="${ui.reviewMode === "week"}">本周复盘</button></div>`;
+}
+function bindSwitch() {
+  view.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { if (ui.reviewMode !== b.dataset.mode) { ui.reviewMode = b.dataset.mode; renderReview(true); } });
+}
+function renderReview(animate) { return ui.reviewMode === "week" ? renderWeek(animate) : renderRoad(animate); }
+window.addEventListener("resize", () => {
+  clearTimeout(roadResize);
+  roadResize = setTimeout(() => { if (ui.tab === "review" && ui.reviewMode === "road" && !$("sheet-wrap")) renderRoad(false); }, 200);
+});
 
 /* ---------- 来信 ---------- */
 function addMonths(dateStr, m) { const d = parseDate(dateStr); d.setMonth(d.getMonth() + m); return ymd(d); }
