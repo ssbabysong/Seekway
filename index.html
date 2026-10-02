@@ -181,6 +181,30 @@ button.item:active { opacity: .6; }
 .panel .scroll { overflow-y: auto; padding: 8px 20px calc(30px + env(safe-area-inset-bottom, 0px)); }
 .step-n { font-size: 13px; color: var(--accent); font-weight: 600; }
 
+/* today */
+.answer-card { background: var(--fill); border-radius: 14px; padding: 14px 16px 10px; display: flex; flex-direction: column; gap: 8px; }
+.answer-card .text { color: var(--ink); font-size: 16px; line-height: 1.8; }
+.hint.ok { color: var(--accent); }
+.energy { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ecard { border-radius: 18px; padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ecard.up { background: var(--warm-soft); color: var(--warm); }
+.ecard.down { background: var(--cool-soft); color: var(--cool); }
+.ehead { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.eicon { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); font-size: 13px; }
+.ecount { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; opacity: .8; }
+.elist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.elist li { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 7px 0; border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); color: var(--ink); font-size: 15px; line-height: 1.5; }
+.elist li span { min-width: 0; overflow-wrap: anywhere; }
+.elist .x { border: 0; background: none; color: currentColor; opacity: .35; cursor: pointer; font-size: 12px; padding: 4px; }
+.eadd { border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+.elist:empty + .eadd, .ehead + .eadd { border-top: 0; }
+.eadd input { width: 100%; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 16px; padding: 9px 0; }
+.eadd input::placeholder { color: currentColor; opacity: .55; }
+.ecard.up .eadd input::placeholder { color: var(--warm); }
+.ecard.down .eadd input::placeholder { color: var(--cool); }
+.eadd input:focus { outline: none; }
+@media (max-width: 340px) { .energy { grid-template-columns: 1fr; } }
+
 /* letters */
 .label-sm { font-size: 15px; font-weight: 500; }
 .pills { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -593,7 +617,7 @@ function openCoverPicker() {
   $("sheet-wrap").addEventListener("click", e => { if (e.target.id === "sheet-wrap") closeSheet(); });
 }
 
-const ui = { tab: "today", weekStart: mondayOf(TODAY), open: {}, reviewMode: "road" };
+const ui = { tab: "today", weekStart: mondayOf(TODAY), open: {}, reviewMode: "road", editAnswer: false };
 try { ui.tab = sessionStorage.getItem("seekway-tab") || "today"; } catch (e) {}
 const view = $("view");
 let sampleFn = null;
@@ -604,50 +628,107 @@ function paint(html, animate) {
 }
 
 /* ---------- 今天 ---------- */
-let energyKind = "up";
+// drafts live per question, so switching questions switches the text too; a backup copy stays in this browser
+const DRAFT_KEY = "seekway-draft-" + TODAY;
+function localDrafts() { try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}"); } catch (e) { return {}; } }
+function keepLocalDraft(q, text) { const all = localDrafts(); all[q] = text; try { localStorage.setItem(DRAFT_KEY, JSON.stringify(all)); } catch (e) {} }
+const hhmm = t => { const d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+function energyCard(kind, energy) {
+  const items = energy.map((e, i) => ({ ...e, i })).filter(e => e.kind === kind);
+  const up = kind === "up";
+  return `<div class="ecard ${kind}">
+    <div class="ehead"><span class="eicon" aria-hidden="true">${up ? "↑" : "↓"}</span><span>${up ? "充电" : "耗电"}</span><span class="ecount">${items.length || ""}</span></div>
+    ${items.length ? `<ul class="elist">${items.map(e => `<li><span>${esc(e.text)}</span><button class="x" type="button" data-i="${e.i}" aria-label="删除 ${esc(e.text)}">✕</button></li>`).join("")}</ul>` : ""}
+    <form class="eadd" data-kind="${kind}"><input id="eadd-${kind}" maxlength="40" enterkeyhint="done" autocomplete="off" placeholder="＋ ${up ? "让你有劲的事" : "让你消耗的事"}" aria-label="${up ? "记一件让你有劲的事" : "记一件让你消耗的事"}"></form>
+  </div>`;
+}
 function renderToday(animate) {
   const day = dayDoc(TODAY);
   const energy = day.energy || [];
+  const submitted = !!(day.answer && day.answer.trim());
+  const editing = submitted && ui.editAnswer;
+  const draft = editing ? day.answer : ((day.drafts || {})[day.q] ?? localDrafts()[day.q] ?? "");
   paint(`
   <div class="section first">
     <div><div class="kicker">${md(TODAY)} ${weekdayCN(TODAY)} · 今日一问</div><h1>${esc(QUESTIONS[day.q])}</h1></div>
-    <textarea class="write" id="answer" placeholder="想到什么就写什么，不用写完整。">${esc(day.answer)}</textarea>
-    <div class="row between"><button class="btn link" id="swap" type="button">换一个问题</button><span class="hint" id="save-status">${whereText()}</span></div>
+    ${submitted && !editing ? `
+      <div class="answer-card">
+        <p class="text">${esc(day.answer)}</p>
+        <div class="row between"><span class="hint ok">✓ 已保存${day.submittedAt ? " · " + hhmm(day.submittedAt) : ""}</span><button class="btn link" id="edit-answer" type="button">修改</button></div>
+      </div>
+      <p class="hint" id="save-status">${whereText()}</p>`
+    : `
+      <textarea class="write" id="answer" placeholder="想到什么就写什么，不用写完整。">${esc(draft)}</textarea>
+      <div class="row between">
+        ${editing ? `<button class="btn link muted" id="cancel-edit" type="button">取消</button>` : `<button class="btn link" id="swap" type="button">换一个问题</button>`}
+        <button class="btn primary" id="submit-answer" type="button">${editing ? "保存修改" : "写好了"}</button>
+      </div>
+      <p class="hint" id="save-status">${editing ? "改好后点保存。" : "写好后点「写好了」。还没写完也没关系，草稿会先帮你留着。"}</p>`}
   </div>
   <div class="section">
-    <div><h2>今天的能量</h2><p class="hint">哪些事让你有劲，哪些让你消耗？记两三条就好。</p></div>
-    <form id="energy-form" style="display:flex;flex-direction:column;gap:10px">
-      <input class="field" id="energy-text" maxlength="40" placeholder="比如：和朋友聊项目" autocomplete="off">
-      <div class="row between">
-        <span class="seg" role="group" aria-label="类型">
-          <button type="button" data-kind="up" aria-pressed="${energyKind === "up"}">充电</button>
-          <button type="button" data-kind="down" aria-pressed="${energyKind === "down"}">耗电</button>
-        </span>
-        <button class="btn primary" type="submit">记下</button>
-      </div>
-    </form>
-    ${energy.length ? `<div class="chips">${energy.map((e, i) => `<span class="tag ${e.kind}">${e.kind === "up" ? "↑" : "↓"} ${esc(e.text)}<button class="x" type="button" data-i="${i}" aria-label="删除 ${esc(e.text)}">✕</button></span>`).join("")}</div>` : ""}
+    <div><h2>今天的能量</h2><p class="hint">哪些事让你有劲，哪些让你消耗？各记一两件就好。</p></div>
+    <div class="energy">${energyCard("up", energy)}${energyCard("down", energy)}</div>
   </div>`, animate);
 
-  const flush = bindAutosave($("answer"), v => { const d = dayDoc(TODAY); d.answer = v; return put("d-" + TODAY, d).then(() => renderHero()); });
-  $("swap").onclick = () => { flush(); const d = dayDoc(TODAY); d.q = (d.q + 7) % QUESTIONS.length; put("d-" + TODAY, d).catch(() => {}); renderToday(); };
-  view.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
-    energyKind = b.dataset.kind;
-    view.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-  });
-  $("energy-form").addEventListener("submit", ev => {
+  const ta = $("answer");
+  if (ta) {
+    // drafts: kept in this browser right away, and in the day record after a pause
+    let t;
+    const keepDraft = () => {
+      clearTimeout(t);
+      if (editing) return;
+      const d = dayDoc(TODAY);
+      if (((d.drafts || {})[d.q] ?? "") === ta.value) return;
+      d.drafts = { ...(d.drafts || {}), [d.q]: ta.value };
+      store.put("d-" + TODAY, d).catch(() => {});
+    };
+    ta.addEventListener("input", () => { autogrow(ta); if (!editing) keepLocalDraft(day.q, ta.value); clearTimeout(t); t = setTimeout(keepDraft, 1200); });
+    ta.addEventListener("blur", keepDraft);
+    requestAnimationFrame(() => autogrow(ta));
+    const swap = $("swap");
+    if (swap) swap.onclick = () => {
+      keepDraft();
+      const d = dayDoc(TODAY);
+      d.q = (d.q + 7) % QUESTIONS.length;
+      store.put("d-" + TODAY, d).catch(() => {});
+      renderToday();
+    };
+    const cancel = $("cancel-edit");
+    if (cancel) cancel.onclick = () => { ui.editAnswer = false; renderToday(); };
+    $("submit-answer").onclick = () => {
+      const text = ta.value.trim();
+      if (!text) { ta.focus(); $("save-status").textContent = "先写一点再提交。"; return; }
+      clearTimeout(t);
+      const btn = $("submit-answer");
+      btn.disabled = true; btn.textContent = "保存中…";
+      const d = { ...dayDoc(TODAY), answer: text, submittedAt: Date.now() };
+      delete d.drafts;
+      store.put("d-" + TODAY, d).then(() => {
+        try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+        haptic();
+        ui.editAnswer = false;
+        renderToday(); renderHero();
+      }, e => {
+        btn.disabled = false; btn.textContent = editing ? "保存修改" : "写好了";
+        $("save-status").textContent = e && e.code === "quota_exceeded" ? "空间满了，删掉一些旧记录再试。" : "没保存上，你写的内容还在，稍后再点一次。";
+      });
+    };
+  } else {
+    $("edit-answer").onclick = () => { ui.editAnswer = true; renderToday(); const a = $("answer"); if (a) { a.focus(); a.setSelectionRange(a.value.length, a.value.length); } };
+  }
+
+  view.querySelectorAll(".eadd").forEach(f => f.addEventListener("submit", ev => {
     ev.preventDefault();
-    const text = $("energy-text").value.trim();
-    if (!text) { $("energy-text").focus(); return; }
-    flush();
+    const input = f.querySelector("input"), text = input.value.trim(), kind = f.dataset.kind;
+    if (!text) return;
     const d = dayDoc(TODAY);
-    d.energy = [...(d.energy || []), { text, kind: energyKind }];
+    d.energy = [...(d.energy || []), { text, kind }];
     put("d-" + TODAY, d).catch(() => {});
+    haptic();
     renderToday(); renderHero();
-    $("energy-text").focus({ preventScroll: true });
-  });
-  view.querySelectorAll(".tag .x").forEach(b => b.onclick = () => {
-    flush();
+    const again = $("eadd-" + kind); if (again) again.focus({ preventScroll: true });
+  }));
+  view.querySelectorAll(".ecard .x").forEach(b => b.onclick = () => {
     const d = dayDoc(TODAY);
     d.energy = d.energy.filter((_, i) => i !== +b.dataset.i);
     put("d-" + TODAY, d).catch(() => {});
