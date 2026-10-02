@@ -3,177 +3,177 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Seekway">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 <title>Seekway</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+SC:wght@400;500&display=swap">
 <style>
-/* Layout: a quiet single column like a bound journal; big serif page titles; writing happens on borderless paper; a bottom tab bar like a native app. */
+/* Layout: iOS idiom — large titles, inset grouped lists, frosted tab bar, bottom sheets. System font stack, one indigo tint. */
 :root {
-  --bg: #f3f3f0;
-  --paper: #fbfbf9;
-  --ink: #17191c;
-  --muted: #6b6f74;
-  --faint: #a2a5a9;
-  --line: #e2e2dd;
-  --accent: #2f3d63;
-  --accent-soft: #e6e9f1;
-  --up: #a2702a;
-  --up-soft: #f2e9d8;
-  --down: #5a6a83;
-  --down-soft: #e4e8ee;
-  --warm: #974a3b;
-  --warm-soft: #f3e5e0;
-  --font-brand: "Cormorant Garamond", "Times New Roman", serif;
-  --font-serif: "Noto Serif SC", "Songti SC", "STSong", serif;
-  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --bg: #f2f2f7;
+  --cell: #ffffff;
+  --cell-2: #f2f2f7;
+  --label: #000000;
+  --label-2: rgba(60, 60, 67, .6);
+  --label-3: rgba(60, 60, 67, .3);
+  --sep: rgba(60, 60, 67, .2);
+  --fill: rgba(120, 120, 128, .12);
+  --tint: #5856d6;
+  --tint-soft: rgba(88, 86, 214, .12);
+  --orange: #ff9500;
+  --teal: #30b0c7;
+  --pink: #ff2d55;
+  --red: #ff3b30;
+  --green: #34c759;
+  --bar: rgba(249, 249, 249, .82);
+  --seg-on: #ffffff;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1012; --paper: #16171a; --ink: #e8e8e5; --muted: #9a9ea3; --faint: #5f6368; --line: #26282c;
-    --accent: #a9b6dd; --accent-soft: #1e2433; --up: #d8a75e; --up-soft: #2d2518; --down: #9fb0c9; --down-soft: #1d232d;
-    --warm: #e09a88; --warm-soft: #33211d; color-scheme: dark;
+    --bg: #000000; --cell: #1c1c1e; --cell-2: #2c2c2e; --label: #ffffff; --label-2: rgba(235, 235, 245, .6); --label-3: rgba(235, 235, 245, .3);
+    --sep: rgba(84, 84, 88, .6); --fill: rgba(120, 120, 128, .24); --tint: #5e5ce6; --tint-soft: rgba(94, 92, 230, .22);
+    --orange: #ff9f0a; --teal: #40c8e0; --pink: #ff375f; --red: #ff453a; --green: #30d158; --bar: rgba(22, 22, 24, .82); --seg-on: #636366;
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1012; --paper: #16171a; --ink: #e8e8e5; --muted: #9a9ea3; --faint: #5f6368; --line: #26282c;
-  --accent: #a9b6dd; --accent-soft: #1e2433; --up: #d8a75e; --up-soft: #2d2518; --down: #9fb0c9; --down-soft: #1d232d;
-  --warm: #e09a88; --warm-soft: #33211d; color-scheme: dark;
+  --bg: #000000; --cell: #1c1c1e; --cell-2: #2c2c2e; --label: #ffffff; --label-2: rgba(235, 235, 245, .6); --label-3: rgba(235, 235, 245, .3);
+  --sep: rgba(84, 84, 88, .6); --fill: rgba(120, 120, 128, .24); --tint: #5e5ce6; --tint-soft: rgba(94, 92, 230, .22);
+  --orange: #ff9f0a; --teal: #40c8e0; --pink: #ff375f; --red: #ff453a; --green: #30d158; --bar: rgba(22, 22, 24, .82); --seg-on: #636366;
+  color-scheme: dark;
 }
-* { box-sizing: border-box; }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.75; letter-spacing: .01em; -webkit-font-smoothing: antialiased; }
-.app { max-width: 620px; margin: 0 auto; padding-inline: 20px; padding-block: 28px calc(110px + env(safe-area-inset-bottom, 0px)); }
-.top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: var(--muted); font-size: .8rem; }
-.brand { font-family: var(--font-brand); font-style: italic; font-size: 1.35rem; color: var(--ink); letter-spacing: .01em; }
-.save-state { font-size: .75rem; color: var(--faint); }
-main { display: flex; flex-direction: column; gap: 44px; margin-top: 28px; }
-.page-head { display: flex; flex-direction: column; gap: 6px; }
-h1 { font-family: var(--font-serif); font-weight: 600; font-size: 2rem; line-height: 1.3; margin: 0; letter-spacing: .02em; }
-h2 { font-family: var(--font-serif); font-weight: 600; font-size: 1.2rem; line-height: 1.5; margin: 0; text-wrap: balance; }
-.sub { color: var(--muted); margin: 0; max-width: 34em; }
-.eyebrow { font-size: .72rem; letter-spacing: .18em; color: var(--muted); }
-.block { display: flex; flex-direction: column; gap: 14px; }
-.hair { height: 1px; background: var(--line); border: 0; margin: 0; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--label); font-family: var(--font); font-size: 17px; line-height: 1.4; letter-spacing: -.01em; -webkit-font-smoothing: antialiased; }
+body.locked { overflow: hidden; }
+button { font: inherit; color: inherit; }
+.app { max-width: 600px; margin: 0 auto; padding-inline: 16px; padding-block: 8px calc(96px + env(safe-area-inset-bottom, 0px)); }
 
-/* writing paper */
-.question { font-family: var(--font-serif); font-weight: 500; font-size: 1.45rem; line-height: 1.6; margin: 0; text-wrap: balance; }
-.write { width: 100%; border: 0; background: transparent; color: var(--ink); font-family: var(--font-serif); font-size: 1.06rem; line-height: 1.95; resize: none; padding: 0; min-height: 7.5em; overflow: hidden; }
-.write::placeholder, input::placeholder { color: var(--faint); }
-.write:focus { outline: none; }
-.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 16px; display: flex; flex-direction: column; gap: 12px; }
-.paper .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 12px; }
-.field { width: 100%; font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 8px 0; }
-.field:focus { outline: none; border-bottom-color: var(--accent); }
-.small-field { flex: 1 1 160px; min-width: 0; }
+/* navigation */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 20; padding-top: env(safe-area-inset-top, 0px); background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: .5px solid var(--sep); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.navbar.on { opacity: 1; }
+.navbar div { height: 44px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 17px; }
+.large { padding: 14px 4px 6px; }
+.large .kicker { font-size: 13px; font-weight: 600; color: var(--label-2); text-transform: uppercase; letter-spacing: .02em; }
+.large .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 { font-size: 34px; font-weight: 700; letter-spacing: .01em; line-height: 1.2; margin: 0; }
+.appicon { width: 34px; height: 34px; flex: none; display: block; }
 
-/* buttons & chips */
-.btn { font: inherit; font-size: .88rem; border-radius: 999px; padding: 8px 18px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); white-space: nowrap; }
-.btn:hover { border-color: var(--muted); }
-.btn.solid { background: var(--ink); border-color: var(--ink); color: var(--bg); }
-.btn.up { color: var(--up); border-color: transparent; background: var(--up-soft); }
-.btn.down { color: var(--down); border-color: transparent; background: var(--down-soft); }
-.btn.quiet { border: 0; padding: 4px 0; color: var(--muted); background: none; font-size: .82rem; }
-.btn.quiet.danger { color: var(--warm); }
-.btn[disabled] { opacity: .45; cursor: default; }
-button:focus-visible, .field:focus-visible, .write:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
-.chip { font: inherit; font-size: .86rem; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.tag { display: inline-flex; align-items: center; gap: 2px; font-size: .84rem; padding: 2px 4px 2px 12px; border-radius: 999px; }
-.tag.up { background: var(--up-soft); color: var(--up); }
-.tag.down { background: var(--down-soft); color: var(--down); }
-.tag.need { background: var(--accent-soft); color: var(--accent); padding-right: 12px; }
-.tag .x { font: inherit; border: 0; background: none; color: inherit; cursor: pointer; opacity: .55; padding: 0 8px; }
+/* grouped sections */
+.section { margin-top: 30px; }
+.section:first-of-type { margin-top: 18px; }
+.sh { font-size: 13px; color: var(--label-2); text-transform: uppercase; padding: 0 16px 7px; letter-spacing: .01em; }
+.sf { font-size: 13px; color: var(--label-2); padding: 7px 16px 0; line-height: 1.45; }
+.card { background: var(--cell); border-radius: 12px; overflow: hidden; }
+.pad { padding: 12px 16px; }
+.cell { position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 16px; width: 100%; text-align: left; background: none; border: 0; }
+.cell + .cell::before, .sep::before { content: ""; position: absolute; top: 0; right: 0; left: 16px; border-top: .5px solid var(--sep); }
+.cell.ico + .cell.ico::before { left: 57px; }
+.sep { position: relative; height: 0; }
+button.cell { cursor: pointer; }
+button.cell:active { background: var(--fill); }
+.cell .main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.cell .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell .s { font-size: 15px; color: var(--label-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell .v { color: var(--label-2); font-size: 17px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.chev { width: 8px; height: 13px; flex: none; color: var(--label-3); }
+.sq { width: 29px; height: 29px; border-radius: 7px; display: grid; place-items: center; flex: none; color: #fff; }
+.sq svg { width: 17px; height: 17px; }
+.tintlink { color: var(--tint); background: none; border: 0; padding: 0; cursor: pointer; font-size: 17px; }
+.tintlink.bold { font-weight: 600; }
+.destruct { color: var(--red); }
+.cell.center { justify-content: center; }
 
-/* lists & cards */
-.card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.card .meta { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.excerpt { font-family: var(--font-serif); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.full { font-family: var(--font-serif); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-.quote { font-family: var(--font-serif); margin: 0; padding-left: 16px; border-left: 2px solid var(--warm-soft); color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
-.list { display: flex; flex-direction: column; gap: 12px; }
-.empty { color: var(--faint); font-size: .9rem; padding: 22px; border: 1px dashed var(--line); border-radius: 14px; text-align: center; }
-details > summary { cursor: pointer; color: var(--muted); font-size: .88rem; list-style: none; }
-details > summary::-webkit-details-marker { display: none; }
-details > summary::before { content: "＋ "; color: var(--faint); }
-details[open] > summary::before { content: "－ "; }
-details > .list { margin-top: 12px; }
+/* text input */
+.q { font-size: 20px; font-weight: 600; line-height: 1.4; margin: 0; letter-spacing: -.01em; }
+textarea.txt { display: block; width: 100%; border: 0; background: transparent; color: var(--label); font: inherit; font-size: 17px; line-height: 1.5; resize: none; padding: 0; min-height: 5.6em; overflow: hidden; }
+textarea.txt.short { min-height: 3em; }
+textarea.txt:focus, input.inp:focus { outline: none; }
+textarea.txt::placeholder, input.inp::placeholder { color: var(--label-3); }
+input.inp { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--label); font: inherit; font-size: 17px; padding: 0; text-align: left; }
+input.inp.right { text-align: right; }
+.formlabel { flex: none; }
+select.sel { appearance: none; -webkit-appearance: none; border: 0; background: transparent; color: var(--label-2); font: inherit; font-size: 17px; text-align: right; cursor: pointer; padding: 0 2px; }
+.bigbtn { display: block; width: 100%; height: 50px; border-radius: 12px; border: 0; background: var(--tint); color: #fff; font-size: 17px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+.bigbtn:active { opacity: .8; }
+.bigbtn[disabled] { opacity: .4; }
+button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--tint); outline-offset: 2px; }
 
-/* worry steps */
-.step { display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; }
-.step .n { font-family: var(--font-brand); font-style: italic; font-size: 1.3rem; color: var(--faint); line-height: 1.4; }
-.step .body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.step .t { font-weight: 500; }
-.step .h { color: var(--muted); font-size: .85rem; margin: -6px 0 0; }
-.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.box { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; }
-.box .write { min-height: 4.5em; font-size: 1rem; }
+/* segmented & chips */
+.seg { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--fill); border-radius: 9px; padding: 2px; min-width: 150px; }
+.seg button { border: 0; background: none; border-radius: 7px; padding: 5px 14px; font-size: 13px; font-weight: 500; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--seg-on); box-shadow: 0 3px 8px rgba(0,0,0,.12), 0 3px 1px rgba(0,0,0,.04); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 0; border-radius: 999px; padding: 6px 14px; font-size: 15px; background: var(--fill); color: var(--label); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--tint); color: #fff; }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--tint-soft); color: var(--tint); white-space: nowrap; }
+.xbtn { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--fill); color: var(--label-2); font-size: 13px; line-height: 22px; cursor: pointer; flex: none; padding: 0; }
 
 /* review */
-.week-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.week-nav .range { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .88rem; }
-.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-.day { border-radius: 12px; padding: 10px 2px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; background: var(--paper); border: 1px solid var(--line); min-height: 120px; }
-.day.today { border-color: var(--ink); }
-.day.future { opacity: .45; }
-.day .wd { font-size: .72rem; color: var(--muted); }
-.day .dn { font-family: var(--font-serif); font-weight: 600; font-variant-numeric: tabular-nums; }
-.marks { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.mark { width: 8px; height: 8px; border-radius: 50%; }
-.mark.up { background: var(--up); } .mark.down { background: var(--down); }
-.mark.worry { background: transparent; border: 1.5px solid var(--warm); }
-.mark.ans { width: 14px; height: 2px; border-radius: 2px; background: var(--accent); }
-.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .75rem; color: var(--muted); }
-.legend .mark { display: inline-block; }
-.legend span { display: inline-flex; align-items: center; gap: 6px; }
-.patterns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.weeknav { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-top: 10px; }
+.weeknav button[disabled] { color: var(--label-3); cursor: default; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); padding: 12px 6px 14px; }
+.wd { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.wd .l { font-size: 11px; font-weight: 600; color: var(--label-2); }
+.wd .n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; font-variant-numeric: tabular-nums; }
+.wd.today .n { background: var(--tint); color: #fff; font-weight: 600; }
+.wd.future { opacity: .35; }
+.marks { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; max-width: 30px; min-height: 6px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
+.dot.ans { background: var(--tint); } .dot.up { background: var(--orange); } .dot.down { background: var(--teal); } .dot.worry { background: var(--pink); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--cell); border-radius: 12px; padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.tile .tt { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
+.tile .tt svg { width: 16px; height: 16px; }
 .ranks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.ranks li { display: flex; justify-content: space-between; gap: 8px; font-size: .9rem; }
-.ranks li span:first-child { overflow-wrap: anywhere; min-width: 0; }
-.ranks li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
-.mirror { font-family: var(--font-serif); white-space: pre-wrap; margin: 0; color: var(--accent); line-height: 1.95; }
-.ritual { display: flex; flex-direction: column; gap: 22px; }
-.ritual label { font-family: var(--font-serif); font-weight: 500; }
-.hint { color: var(--faint); font-size: .82rem; margin: 0; }
+.ranks li { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
+.ranks li span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ranks li span:last-child { color: var(--label-2); font-variant-numeric: tabular-nums; }
+.muted { color: var(--label-2); font-size: 15px; margin: 0; }
+.quote { margin: 0; padding-left: 12px; border-left: 3px solid var(--fill); color: var(--label-2); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; }
+.body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.mini { font-size: 13px; color: var(--label-2); font-weight: 600; }
+.stack { display: flex; flex-direction: column; gap: 10px; }
 
-/* bottom tab bar */
-nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); }
-nav.tabs .inner { max-width: 620px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
-nav.tabs button { font: inherit; font-size: .86rem; background: none; border: 0; padding: 8px 0 6px; color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-nav.tabs button::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: transparent; }
-nav.tabs button[aria-selected="true"] { color: var(--ink); font-weight: 500; }
-nav.tabs button[aria-selected="true"]::after { background: var(--ink); }
+/* tab bar */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--sep); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.tabbar .in { max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.tabbar button { border: 0; background: none; padding: 7px 0 5px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; font-weight: 500; color: #999; cursor: pointer; }
+.tabbar svg { width: 26px; height: 26px; }
+.tabbar button[aria-selected="true"] { color: var(--tint); }
 
+/* sheet */
+.sheet-wrap { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.32); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 600px; height: calc(100% - 12px - env(safe-area-inset-top, 0px)); background: var(--bg); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; overflow: hidden; }
+.sheet .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--label-3); margin: 6px auto 0; flex: none; }
+.sheet .nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 6px 16px 8px; flex: none; }
+.sheet .nav .ttl { font-weight: 600; }
+.sheet .nav .r { justify-self: end; }
+.sheet .nav .l { justify-self: start; }
+.sheet .scroll { overflow-y: auto; padding: 0 16px calc(30px + env(safe-area-inset-bottom, 0px)); flex: 1; -webkit-overflow-scrolling: touch; }
 @media (prefers-reduced-motion: no-preference) {
-  main > * { animation: rise .35s ease-out both; }
-  main > *:nth-child(2) { animation-delay: .04s; } main > *:nth-child(3) { animation-delay: .08s; }
-  @keyframes rise { from { transform: translateY(6px); } to { transform: none; } }
+  .sheet-wrap { animation: fade .25s ease-out; }
+  .sheet { animation: up .32s cubic-bezier(.2, .9, .3, 1); }
+  @keyframes fade { from { background: rgba(0,0,0,0); } }
+  @keyframes up { from { transform: translateY(100%); } }
 }
-@media (max-width: 440px) {
-  h1 { font-size: 1.7rem; }
-  .question { font-size: 1.28rem; }
-  .paper { padding: 18px 16px 14px; }
-  .patterns { grid-template-columns: 1fr; }
-  .day { min-height: 104px; }
-}
+@media (max-width: 380px) { h1 { font-size: 30px; } .tiles { grid-template-columns: 1fr; } }
 </style>
 
-<div class="app">
-  <div class="top"><span class="brand">Seekway</span><span class="save-state" id="where"></span></div>
-  <main id="view"><div class="empty">正在打开你的本子…</div></main>
-</div>
-<nav class="tabs" aria-label="页面">
-  <div class="inner" role="tablist">
-    <button role="tab" id="tab-today" data-tab="today" aria-selected="true">今天</button>
-    <button role="tab" id="tab-worry" data-tab="worry" aria-selected="false">心事</button>
-    <button role="tab" id="tab-review" data-tab="review" aria-selected="false">回顾</button>
-    <button role="tab" id="tab-letter" data-tab="letter" aria-selected="false">来信</button>
-  </div>
-</nav>
+<div class="navbar" id="navbar" aria-hidden="true"><div id="nav-title"></div></div>
+<div class="app"><main id="view"><div class="large"><h1>Seekway</h1></div></main></div>
+<nav class="tabbar" aria-label="页面"><div class="in" role="tablist" id="tabs"></div></nav>
+<div id="sheet-root"></div>
 
 <script>
 const QUESTIONS = [
@@ -222,6 +222,29 @@ const FEELINGS = ["生气", "委屈", "失望", "焦虑", "无力", "被忽视",
 const NEEDS = ["被尊重", "被认可", "被理解", "被看见", "公平", "自主", "安全感", "被信任", "边界", "归属"];
 const WEEKDAYS = "一二三四五六日";
 
+/* ---------- icons ---------- */
+const svg = (d, extra = "") => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+const ICON = {
+  today: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>'),
+  worry: svg('<path d="M7 18.5h10.2a4.3 4.3 0 0 0 .6-8.56A6.2 6.2 0 0 0 5.9 11.3 3.6 3.6 0 0 0 7 18.5z"/>'),
+  review: svg('<rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17M8 2.8v3.4M16 2.8v3.4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.2h.01M12 17.2h.01"/>'),
+  letter: svg('<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/>'),
+  up: svg('<path d="M12 19V5M6 11l6-6 6 6"/>', 'stroke-width="2.4"'),
+  down: svg('<path d="M12 5v14M6 13l6 6 6-6"/>', 'stroke-width="2.4"'),
+  heart: svg('<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/>', 'stroke-width="2.2"'),
+  person: svg('<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.7 3.6-5.6 7-5.6s6.2 1.9 7 5.6"/>', 'stroke-width="2.2"'),
+  lock: svg('<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/>', 'stroke-width="2.2"'),
+  mail: svg('<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/>', 'stroke-width="2.2"'),
+  sparkle: svg('<path d="M12 3.5l1.8 5 5 1.8-5 1.8-1.8 5-1.8-5-5-1.8 5-1.8z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>'),
+  leaf: svg('<path d="M5 19c0-8 5.5-13 14-13 0 8.5-5 14-13 14"/><path d="M5 19l7-7"/>', 'stroke-width="2.2"'),
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'stroke-width="2.4"'),
+  clock: svg('<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>', 'stroke-width="2.2"')
+};
+const CHEV = `<svg class="chev" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 1.5l5 5-5 5"/></svg>`;
+const APPICON = `<svg class="appicon" viewBox="0 0 64 64" role="img" aria-label="Seekway"><defs><linearGradient id="ai-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a78f2"/><stop offset="1" stop-color="#4a47c4"/></linearGradient></defs><rect width="64" height="64" rx="14.5" fill="url(#ai-g)"/><path d="M21 49V30.5a11 11 0 0 1 22 0V49" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/><circle cx="32" cy="39" r="4.4" fill="#fff"/></svg>`;
+const sq = (color, icon) => `<span class="sq" style="background:var(--${color})">${ICON[icon]}</span>`;
+
+/* ---------- dates & helpers ---------- */
 const pad = n => String(n).padStart(2, "0");
 const ymd = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
 const parseDate = s => new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
@@ -230,6 +253,7 @@ const mondayOf = s => { const d = parseDate(s); d.setDate(d.getDate() - (d.getDa
 const TODAY = ymd(new Date());
 const dayNumber = s => Math.floor(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 864e5);
 const md = s => +s.slice(5, 7) + "月" + +s.slice(8, 10) + "日";
+const ago = s => { const n = dayNumber(TODAY) - dayNumber(s); return n === 0 ? "今天" : n === 1 ? "昨天" : n + " 天前"; };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const $ = id => document.getElementById(id);
 
@@ -272,17 +296,18 @@ const store = {
   },
   list(type) { return Object.entries(this.docs).filter(([, d]) => d.type === type).map(([id, d]) => ({ id, ...d })); }
 };
-const saveErr = e => e && e.code === "quota_exceeded" ? "空间满了，删掉一些旧记录再试" : "没保存上，稍后再试";
-let flashTimer;
-function flash(msg) {
-  const el = $("where"); if (!el) return;
-  el.textContent = msg; clearTimeout(flashTimer);
-  if (msg === "已保存") flashTimer = setTimeout(() => { el.textContent = whereText(); }, 1800);
+let statusTimer;
+function status(msg) {
+  const el = $("save-status"); if (!el) return;
+  el.textContent = msg; clearTimeout(statusTimer);
+  if (msg === "已保存") statusTimer = setTimeout(() => { if (el.isConnected) el.textContent = whereText(); }, 1600);
 }
-const whereText = () => store.mode === "cloud" ? "只有你能看到" : "仅保存在此浏览器";
+const whereText = () => store.mode === "cloud" ? "只有你能看到" : "保存在此浏览器";
 function put(id, doc) {
-  flash("保存中…");
-  return store.put(id, doc).then(() => flash("已保存"), e => { flash(saveErr(e)); throw e; });
+  status("保存中…");
+  return store.put(id, doc).then(() => status("已保存"), e => {
+    status(e && e.code === "quota_exceeded" ? "空间满了，删掉一些旧记录再试" : "没保存上，稍后再试"); throw e;
+  });
 }
 
 function dayDoc(date) {
@@ -292,8 +317,10 @@ function weekDoc(start) {
   return store.docs["w-" + start] || { type: "week", start, moment: "", pattern: "", note: "", ai: "" };
 }
 const hasDay = d => !!(d && ((d.answer && d.answer.trim()) || (d.energy && d.energy.length)));
+const worries = () => store.list("worry").sort((a, b) => b.at - a.at);
 
 function autogrow(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
+function grow(el) { el.addEventListener("input", () => autogrow(el)); requestAnimationFrame(() => autogrow(el)); }
 function bindAutosave(el, save) {
   let t, last = el.value;
   const flush = () => { clearTimeout(t); if (el.value === last) return; last = el.value; save(el.value).catch(() => {}); };
@@ -302,67 +329,75 @@ function bindAutosave(el, save) {
   requestAnimationFrame(() => autogrow(el));
   return flush;
 }
-function confirmDelete(btn, onYes) {
+function arm(btn, label, onYes) {
   if (btn.dataset.armed) { onYes(); return; }
-  const label = btn.textContent;
-  btn.dataset.armed = "1"; btn.textContent = "再点一次删除";
-  setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = label; } }, 3000);
+  const old = btn.textContent;
+  btn.dataset.armed = "1"; btn.textContent = label;
+  setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = old; } }, 3000);
 }
 
-const ui = { tab: "today", worryId: null, weekStart: mondayOf(TODAY) };
+const ui = { tab: "today", weekStart: mondayOf(TODAY), open: {} };
 try { ui.tab = sessionStorage.getItem("seekway-tab") || "today"; } catch (e) {}
 const view = $("view");
 let sampleFn = null;
 
+function largeTitle(kicker, title, withIcon) {
+  $("nav-title").textContent = title;
+  return `<header class="large"><div class="kicker">${kicker}</div><div class="row"><h1>${title}</h1>${withIcon ? APPICON : ""}</div></header>`;
+}
+const section = (header, inner, footer) =>
+  `<section class="section">${header ? `<div class="sh">${header}</div>` : ""}${inner}${footer ? `<div class="sf">${footer}</div>` : ""}</section>`;
+
 /* ---------- 今天 ---------- */
+let energyKind = "up";
 function renderToday() {
   const day = dayDoc(TODAY);
   const energy = day.energy || [];
   const d = new Date();
   view.innerHTML = `
-  <div class="page-head">
-    <span class="eyebrow">${d.getFullYear()} · 星期${WEEKDAYS[(d.getDay() + 6) % 7]}</span>
-    <h1>${md(TODAY)}</h1>
-  </div>
-
-  <div class="paper">
-    <span class="eyebrow">今日一问</span>
-    <p class="question">${esc(QUESTIONS[day.q])}</p>
-    <textarea class="write" id="answer" placeholder="想到什么就写什么，不用写完整。">${esc(day.answer)}</textarea>
-    <div class="foot"><button class="btn quiet" id="swap" type="button">换一个问题</button><span class="hint">自动保存</span></div>
-  </div>
-
-  <div class="block">
-    <span class="eyebrow">能量</span>
-    <h2>今天哪些事让你有劲，哪些让你消耗？</h2>
-    <form class="row" id="energy-form">
-      <input class="field small-field" type="text" id="energy-text" maxlength="40" placeholder="比如：和朋友聊项目" autocomplete="off">
-      <button class="btn up" type="submit" data-kind="up">充电</button>
-      <button class="btn down" type="submit" data-kind="down">耗电</button>
+  ${largeTitle(md(TODAY) + " 星期" + WEEKDAYS[(d.getDay() + 6) % 7], "今天", true)}
+  ${section("今日一问", `
+    <div class="card">
+      <div class="pad stack">
+        <p class="q">${esc(QUESTIONS[day.q])}</p>
+        <textarea class="txt" id="answer" placeholder="想到什么就写什么">${esc(day.answer)}</textarea>
+      </div>
+      <div class="cell"><button class="tintlink" id="swap" type="button">换一个问题</button><span class="main"></span><span class="mini" id="save-status">${whereText()}</span></div>
+    </div>`)}
+  ${section("能量", `
+    <form class="card" id="energy-form">
+      <div class="cell"><input class="inp" id="energy-text" maxlength="40" placeholder="今天做了什么？" autocomplete="off"></div>
+      <div class="cell">
+        <div class="seg" role="group" aria-label="类型">
+          <button type="button" data-kind="up" aria-pressed="${energyKind === "up"}">充电</button>
+          <button type="button" data-kind="down" aria-pressed="${energyKind === "down"}">耗电</button>
+        </div>
+        <span class="main"></span>
+        <button class="tintlink bold" type="submit">添加</button>
+      </div>
     </form>
-    ${energy.length ? `<ul class="chips">${energy.map((e, i) =>
-      `<li class="tag ${e.kind}">${e.kind === "up" ? "↑" : "↓"} ${esc(e.text)}<button class="x" data-i="${i}" type="button" aria-label="删除 ${esc(e.text)}">×</button></li>`).join("")}</ul>`
-    : `<p class="hint">记两三条就好。它们会在「回顾」里慢慢汇成线索。</p>`}
-  </div>`;
+    ${energy.length ? `<div class="card" style="margin-top:12px">${energy.map((e, i) => `
+      <div class="cell ico">${sq(e.kind === "up" ? "orange" : "teal", e.kind)}<span class="main"><span class="t">${esc(e.text)}</span></span><button class="xbtn" type="button" data-i="${i}" aria-label="删除 ${esc(e.text)}">✕</button></div>`).join("")}</div>` : ""}`,
+    energy.length ? "" : "记两三条就好。时间久了，「回顾」会告诉你哪些事反复让你有劲。")}`;
 
-  const ta = $("answer");
-  const flush = bindAutosave(ta, v => { const d = dayDoc(TODAY); d.answer = v; return put("d-" + TODAY, d); });
+  const flush = bindAutosave($("answer"), v => { const d = dayDoc(TODAY); d.answer = v; return put("d-" + TODAY, d); });
   $("swap").onclick = () => { flush(); const d = dayDoc(TODAY); d.q = (d.q + 7) % QUESTIONS.length; put("d-" + TODAY, d).catch(() => {}); renderToday(); };
-
-  let kind = "up";
-  view.querySelectorAll("#energy-form button").forEach(b => b.addEventListener("click", () => { kind = b.dataset.kind; }));
+  view.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+    energyKind = b.dataset.kind;
+    view.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  });
   $("energy-form").addEventListener("submit", ev => {
     ev.preventDefault();
     const text = $("energy-text").value.trim();
     if (!text) { $("energy-text").focus(); return; }
     flush();
     const d = dayDoc(TODAY);
-    d.energy = [...(d.energy || []), { text, kind }];
+    d.energy = [...(d.energy || []), { text, kind: energyKind }];
     put("d-" + TODAY, d).catch(() => {});
     renderToday();
     $("energy-text").focus();
   });
-  view.querySelectorAll(".tag .x").forEach(b => b.onclick = () => {
+  view.querySelectorAll(".xbtn").forEach(b => b.onclick = () => {
     flush();
     const d = dayDoc(TODAY);
     d.energy = d.energy.filter((_, i) => i !== +b.dataset.i);
@@ -372,47 +407,35 @@ function renderToday() {
 }
 
 /* ---------- 心事 ---------- */
-function worries() { return store.list("worry").sort((a, b) => b.at - a.at); }
-
+function worryRow(w) {
+  const sub = [md(w.date), w.who, (w.needs || []).slice(0, 2).join("、")].filter(Boolean).join(" · ");
+  const icon = w.status === "vent" ? sq("pink", "heart") : w.status === "letgo" ? sq("green", "leaf") : sq("tint", "check");
+  return `<button class="cell ico" type="button" data-open="${esc(w.id)}">${icon}
+    <span class="main"><span class="t">${esc(w.status === "vent" ? w.vent : (w.fact || w.vent))}</span><span class="s">${esc(sub)}</span></span>${CHEV}</button>`;
+}
 function renderWorry() {
-  if (ui.worryId && store.docs[ui.worryId]) return renderWorryDetail(ui.worryId);
-  ui.worryId = null;
   const all = worries();
-  const pending = all.filter(w => w.status === "vent");
-  const clear = all.filter(w => w.status === "clear");
-  const letgo = all.filter(w => w.status === "letgo");
+  const pending = all.filter(w => w.status === "vent"), clear = all.filter(w => w.status === "clear"), letgo = all.filter(w => w.status === "letgo");
   const talks = store.list("talk").sort((a, b) => b.at - a.at);
-  const card = w => `
-    <button class="card" type="button" data-open="${esc(w.id)}" style="text-align:left;font:inherit;color:inherit;cursor:pointer">
-      <span class="meta"><span>${md(w.date)}${w.who ? " · 和" + esc(w.who) + "有关" : ""}</span><span>${w.status === "vent" ? "补完它 →" : w.status === "letgo" ? "放下了" : "想清楚了"}</span></span>
-      <p class="excerpt">${esc(w.status === "vent" ? w.vent : (w.fact || w.vent))}</p>
-      ${(w.needs || []).length ? `<span class="chips">${w.needs.map(n => `<span class="tag need">${esc(n)}</span>`).join("")}</span>` : ""}
-    </button>`;
   view.innerHTML = `
-  <div class="page-head">
-    <span class="eyebrow">心事</span>
-    <h1>先倒出来</h1>
-    <p class="sub">生气、委屈、放不下的事，写在这里。骂人也行，这里只有你。等平静下来，再回头把它看清楚。</p>
-  </div>
-
-  <div class="paper">
-    <textarea class="write" id="vent" placeholder="发生了什么？你现在什么感觉？"></textarea>
-    <div class="foot">
-      <input class="field small-field" id="who" type="text" maxlength="20" placeholder="和谁有关（可不填）" autocomplete="off">
-      <button class="btn solid" id="vent-save" type="button">先存着</button>
+  ${largeTitle("生气、委屈、放不下的事", "心事", true)}
+  ${section("", `
+    <div class="card">
+      <div class="pad"><textarea class="txt" id="vent" placeholder="先倒出来。骂人也行，这里只有你。"></textarea></div>
+      <div class="cell"><span class="formlabel">和谁有关</span><input class="inp right" id="who" maxlength="20" placeholder="可不填" autocomplete="off"></div>
     </div>
-  </div>
+    <button class="bigbtn" id="vent-save" type="button">存下来</button>`, "等平静下来，再点开它，用四步把它看清楚。")}
+  ${pending.length ? section("等你回头看", `<div class="card">${pending.map(worryRow).join("")}</div>`) : ""}
+  ${clear.length ? section("想清楚了", `<div class="card">${clear.map(worryRow).join("")}</div>`) : ""}
+  ${letgo.length || talks.length ? section("", `<div class="card">
+    ${letgo.length ? `<button class="cell" type="button" data-toggle="letgo"><span class="main">放下了的</span><span class="v">${letgo.length}</span>${CHEV}</button>
+      ${ui.open.letgo ? letgo.map(worryRow).join("") : ""}` : ""}
+    ${talks.length ? `<button class="cell" type="button" data-toggle="talks"><span class="main">以前的对话</span><span class="v">${talks.length}</span>${CHEV}</button>
+      ${ui.open.talks ? talks.map(t => `<div class="cell"><span class="main stack" style="gap:6px"><span class="mini">${md(t.date)}</span>${(t.turns || []).map(x => `<p class="body"${x.role === "me" ? "" : ' style="color:var(--tint)"'}>${esc(x.text)}</p>`).join("")}</span></div>`).join("") : ""}` : ""}
+  </div>`) : ""}
+  <div class="sf" style="margin-top:28px">如果你感到撑不住，请联系身边信任的人，或拨打心理援助热线 12356。</div>`;
 
-  ${pending.length ? `<div class="block"><span class="eyebrow">等你回头看 · ${pending.length}</span><div class="list">${pending.map(card).join("")}</div></div>` : ""}
-  ${clear.length ? `<div class="block"><span class="eyebrow">想清楚了 · ${clear.length}</span><div class="list">${clear.map(card).join("")}</div></div>` : ""}
-  ${letgo.length ? `<details><summary>放下了的 ${letgo.length} 件</summary><div class="list">${letgo.map(card).join("")}</div></details>` : ""}
-  ${!all.length ? `<div class="empty">还没有心事。下次心里堵的时候，先来这里倒一倒。</div>` : ""}
-  ${talks.length ? `<details><summary>以前的对话 ${talks.length} 次</summary><div class="list">${talks.map(t => `
-    <div class="card"><span class="meta"><span>${md(t.date)}</span></span>${(t.turns || []).map(x => `<p class="full"${x.role === "me" ? "" : ' style="color:var(--accent)"'}>${esc(x.text)}</p>`).join("")}</div>`).join("")}</div></details>` : ""}
-  <p class="hint">如果你感到撑不住，请联系身边信任的人，或拨打心理援助热线 12356。</p>`;
-
-  requestAnimationFrame(() => autogrow($("vent")));
-  $("vent").addEventListener("input", e => autogrow(e.target));
+  grow($("vent"));
   $("vent-save").onclick = () => {
     const vent = $("vent").value.trim();
     if (!vent) { $("vent").focus(); return; }
@@ -420,13 +443,17 @@ function renderWorry() {
     put("m-" + at, { type: "worry", at, date: TODAY, vent, who: $("who").value.trim(), status: "vent", fact: "", feelings: [], needs: [], mine: "", notMine: "", later: [] }).catch(() => {});
     renderWorry();
   };
-  view.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { ui.worryId = b.dataset.open; renderWorryDetail(ui.worryId); window.scrollTo(0, 0); });
+  bindListActions(renderWorry);
+}
+function bindListActions(rerender) {
+  view.querySelectorAll("[data-open]").forEach(b => b.onclick = () => openWorrySheet(b.dataset.open, rerender));
+  view.querySelectorAll("[data-toggle]").forEach(b => b.onclick = () => { ui.open[b.dataset.toggle] = !ui.open[b.dataset.toggle]; rerender(); });
 }
 
 function chipGroup(id, options, selected) {
   const all = [...options, ...selected.filter(s => !options.includes(s))];
-  return `<div class="chips" id="${id}">${all.map(o => `<button class="chip" type="button" aria-pressed="${selected.includes(o)}">${esc(o)}</button>`).join("")}</div>
-    <input class="field" id="${id}-more" type="text" maxlength="12" placeholder="其他，回车添加" autocomplete="off">`;
+  return `<div class="pad stack"><div class="chips" id="${id}">${all.map(o => `<button class="chip" type="button" aria-pressed="${selected.includes(o)}">${esc(o)}</button>`).join("")}</div></div>
+    <div class="cell"><input class="inp" id="${id}-more" maxlength="12" placeholder="其他，回车添加" autocomplete="off"></div>`;
 }
 function bindChips(id) {
   const box = $(id);
@@ -442,53 +469,43 @@ function bindChips(id) {
 }
 const picked = id => [...$(id).querySelectorAll('.chip[aria-pressed="true"]')].map(c => c.textContent);
 
-function renderWorryDetail(id) {
-  const w = store.docs[id];
-  view.innerHTML = `
-  <div class="page-head">
-    <button class="btn quiet" id="back" type="button" style="align-self:flex-start">← 心事</button>
-    <span class="eyebrow">${md(w.date)}${w.who ? " · 和" + esc(w.who) + "有关" : ""}</span>
-    <h1>把它看清楚</h1>
-  </div>
-  <p class="quote">${esc(w.vent)}</p>
-
-  <div class="block" style="gap:28px">
-    <div class="step"><span class="n">1</span><div class="body">
-      <span class="t">发生了什么</span><p class="h">只写事实，像摄像机拍到的那样。</p>
-      <textarea class="write" id="w-fact" style="min-height:3.5em" placeholder="比如：开会时他打断了我两次。">${esc(w.fact)}</textarea>
-    </div></div>
-    <div class="step"><span class="n">2</span><div class="body">
-      <span class="t">我当时的感受</span><p class="h">生气的底下，常常还有别的。</p>
-      ${chipGroup("w-feel", FEELINGS, w.feelings || [])}
-    </div></div>
-    <div class="step"><span class="n">3</span><div class="body">
-      <span class="t">它碰到了我什么</span><p class="h">我在乎的、却没被满足的是什么？</p>
-      ${chipGroup("w-need", NEEDS, w.needs || [])}
-    </div></div>
-    <div class="step"><span class="n">4</span><div class="body">
-      <span class="t">我能做什么</span>
-      <div class="split">
-        <div class="box"><span class="eyebrow">在我手里的</span><textarea class="write" id="w-mine" placeholder="我可以说什么、做什么、调整什么？">${esc(w.mine)}</textarea></div>
-        <div class="box"><span class="eyebrow">不在我手里的</span><textarea class="write" id="w-notmine" placeholder="哪些是我改变不了、可以先放下的？">${esc(w.notMine)}</textarea></div>
+function closeSheet() { $("sheet-root").innerHTML = ""; document.body.classList.remove("locked"); }
+function openWorrySheet(id, after) {
+  const w = store.docs[id]; if (!w) return;
+  document.body.classList.add("locked");
+  $("sheet-root").innerHTML = `
+  <div class="sheet-wrap" id="sheet-wrap">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="grab"></div>
+      <div class="nav"><button class="tintlink l" id="s-cancel" type="button">取消</button><span class="ttl" id="sheet-title">看清它</span><button class="tintlink bold r" id="s-done" type="button">完成</button></div>
+      <div class="scroll">
+        ${section(md(w.date) + (w.who ? " · 和" + esc(w.who) + "有关" : ""), `<div class="card pad"><p class="quote">${esc(w.vent)}</p></div>`)}
+        ${section("1　发生了什么", `<div class="card pad"><textarea class="txt short" id="w-fact" placeholder="比如：开会时他打断了我两次">${esc(w.fact)}</textarea></div>`, "只写事实，像摄像机拍到的那样。")}
+        ${section("2　我当时的感受", `<div class="card">${chipGroup("w-feel", FEELINGS, w.feelings || [])}</div>`, "生气的底下，常常还有别的。")}
+        ${section("3　它碰到了我什么", `<div class="card">${chipGroup("w-need", NEEDS, w.needs || [])}</div>`, "我在乎的、却没被满足的是什么？")}
+        ${section("4　我能做什么", `<div class="card">
+          <div class="pad stack" style="gap:4px"><span class="mini">在我手里的</span><textarea class="txt short" id="w-mine" placeholder="我可以说什么、做什么、调整什么？">${esc(w.mine)}</textarea></div>
+          <div class="sep"></div>
+          <div class="pad stack" style="gap:4px"><span class="mini">不在我手里的</span><textarea class="txt short" id="w-notmine" placeholder="哪些是我改变不了、可以先放下的？">${esc(w.notMine)}</textarea></div>
+        </div>`)}
+        ${(w.later || []).length ? section("后来再看", `<div class="card">${w.later.map(l => `<div class="cell"><span class="main stack" style="gap:4px"><span class="mini">${md(l.date)}</span><p class="body">${esc(l.text)}</p></span></div>`).join("")}</div>`) : ""}
+        ${section("", `<div class="card">
+          <button class="cell center tintlink" id="s-letgo" type="button" style="justify-content:center">${w.status === "letgo" ? "放回心上" : "我放下了"}</button>
+          <button class="cell center destruct" id="s-del" type="button" style="justify-content:center;cursor:pointer">删除这件心事</button>
+        </div>`)}
       </div>
-    </div></div>
-  </div>
-
-  <div class="row">
-    <button class="btn solid" id="w-save" type="button">想清楚了，存好</button>
-    <button class="btn" id="w-letgo" type="button">${w.status === "letgo" ? "放回心上" : "我放下了"}</button>
-    <button class="btn quiet danger" id="w-del" type="button" style="margin-left:auto">删除</button>
-  </div>
-  ${(w.later || []).length ? `<div class="block"><span class="eyebrow">后来再看</span>${w.later.map(l => `<div class="card"><span class="meta"><span>${md(l.date)}</span></span><p class="full">${esc(l.text)}</p></div>`).join("")}</div>` : ""}`;
-
-  ["w-fact", "w-mine", "w-notmine"].forEach(i => { const el = $(i); el.addEventListener("input", () => autogrow(el)); requestAnimationFrame(() => autogrow(el)); });
+    </div>
+  </div>`;
+  ["w-fact", "w-mine", "w-notmine"].forEach(i => grow($(i)));
   bindChips("w-feel"); bindChips("w-need");
   const collect = () => ({ ...store.docs[id], fact: $("w-fact").value.trim(), feelings: picked("w-feel"), needs: picked("w-need"), mine: $("w-mine").value.trim(), notMine: $("w-notmine").value.trim() });
-  const leave = () => { ui.worryId = null; renderWorry(); window.scrollTo(0, 0); };
-  $("back").onclick = () => { const d = collect(); if (JSON.stringify(d) !== JSON.stringify(store.docs[id])) put(id, d).catch(() => {}); leave(); };
-  $("w-save").onclick = () => { const d = collect(); if (d.status === "vent") d.status = "clear"; put(id, d).catch(() => {}); leave(); };
-  $("w-letgo").onclick = () => { const d = collect(); d.status = d.status === "letgo" ? "clear" : "letgo"; if (d.status === "letgo") d.letgoOn = TODAY; put(id, d).catch(() => {}); leave(); };
-  $("w-del").onclick = () => confirmDelete($("w-del"), () => { store.remove(id).catch(() => {}); leave(); });
+  const changed = () => JSON.stringify(collect()) !== JSON.stringify(store.docs[id]);
+  const finish = () => { closeSheet(); after(); };
+  $("s-cancel").onclick = () => { if (!changed()) return finish(); arm($("s-cancel"), "放弃更改？", finish); };
+  $("s-done").onclick = () => { const d = collect(); if (d.status === "vent") d.status = "clear"; put(id, d).catch(() => {}); finish(); };
+  $("s-letgo").onclick = () => { const d = collect(); d.status = d.status === "letgo" ? "clear" : "letgo"; if (d.status === "letgo") d.letgoOn = TODAY; put(id, d).catch(() => {}); finish(); };
+  $("s-del").onclick = () => arm($("s-del"), "确定删除", () => { store.remove(id).catch(() => {}); finish(); });
+  $("sheet-wrap").addEventListener("click", e => { if (e.target.id === "sheet-wrap") $("s-cancel").click(); });
 }
 
 /* ---------- 回顾 ---------- */
@@ -504,7 +521,6 @@ function weekData(start) {
   return { dates, days, ws };
 }
 function pickReread() {
-  // something written at least a week ago, not looked at again yet; one per day
   const cands = [
     ...store.list("day").filter(d => d.answer && d.answer.trim()).map(d => ({ id: "d-" + d.date, doc: d })),
     ...worries().map(w => ({ id: w.id, doc: w }))
@@ -512,8 +528,7 @@ function pickReread() {
   const doneToday = cands.find(c => (c.doc.later || []).some(l => l.date === TODAY));
   if (doneToday) return { ...doneToday, done: true };
   const fresh = cands.filter(c => !(c.doc.later || []).length).sort((a, b) => a.doc.date.localeCompare(b.doc.date));
-  if (!fresh.length) return null;
-  return fresh[dayNumber(TODAY) % fresh.length];
+  return fresh.length ? fresh[dayNumber(TODAY) % fresh.length] : null;
 }
 function weekMaterial(start) {
   const { dates, ws } = weekData(start);
@@ -558,116 +573,83 @@ function renderReview() {
   const anything = days.some(hasDay) || ws.length;
   const heavy = worries().filter(w => w.status !== "letgo");
   const rr = isThisWeek ? pickReread() : null;
-  const rank = (items, empty) => items.length
-    ? `<ul class="ranks">${items.map(([t, n]) => `<li><span>${esc(t)}</span><span>${n}</span></li>`).join("")}</ul>`
-    : `<p class="hint">${empty}</p>`;
   const pastWeeks = store.list("week").filter(w => w.start !== start && (w.moment || w.pattern || w.note)).sort((a, b) => b.start.localeCompare(a.start));
+  const tile = (color, icon, title, items, empty) => `
+    <div class="tile"><span class="tt" style="color:var(--${color})">${ICON[icon]}${title}</span>
+      ${items.length ? `<ul class="ranks">${items.map(([t, n]) => `<li><span>${esc(t)}</span><span>${n}</span></li>`).join("")}</ul>` : `<p class="muted">${empty}</p>`}</div>`;
 
   view.innerHTML = `
-  <div class="page-head">
-    <span class="eyebrow">回顾</span>
-    <h1>${isThisWeek ? "这一周的你" : md(start) + " 那一周"}</h1>
-    <p class="sub">看见自己，比改变自己更早一步。先看看这一周留下了什么，再写几句给自己。</p>
+  ${largeTitle(md(start) + " – " + md(end), "回顾", true)}
+  <div class="weeknav">
+    <button class="tintlink" id="prev" type="button">‹ 上一周</button>
+    <button class="tintlink" id="next" type="button" ${isThisWeek ? "disabled" : ""}>下一周 ›</button>
   </div>
-
-  <div class="block">
-    <div class="week-nav">
-      <button class="btn quiet" id="prev" type="button">← 上一周</button>
-      <span class="range">${md(start)} – ${md(end)}</span>
-      <button class="btn quiet" id="next" type="button" ${isThisWeek ? "disabled" : ""}>下一周 →</button>
-    </div>
-    <div class="week">${dates.map((date, i) => {
+  ${section("", `<div class="card"><div class="week">${dates.map((date, i) => {
       const d = store.docs["d-" + date] || {};
       const e = d.energy || [];
       const nUp = e.filter(x => x.kind === "up").length, nDown = e.filter(x => x.kind === "down").length;
       const nW = ws.filter(w => w.date === date).length;
-      const marks = [
-        d.answer && d.answer.trim() ? `<span class="mark ans"></span>` : "",
-        ...Array(Math.min(nUp, 3)).fill(`<span class="mark up"></span>`),
-        ...Array(Math.min(nDown, 3)).fill(`<span class="mark down"></span>`),
-        ...Array(Math.min(nW, 2)).fill(`<span class="mark worry"></span>`)
-      ].join("");
-      return `<div class="day${date === TODAY ? " today" : ""}${date > TODAY ? " future" : ""}"><span class="wd">${WEEKDAYS[i]}</span><span class="dn">${+date.slice(8)}</span><span class="marks">${marks}</span></div>`;
-    }).join("")}</div>
-    <div class="legend"><span><i class="mark ans"></i>回答了问题</span><span><i class="mark up"></i>充电</span><span><i class="mark down"></i>耗电</span><span><i class="mark worry"></i>心事</span></div>
-  </div>
+      const dots = [d.answer && d.answer.trim() ? "ans" : "", ...Array(Math.min(nUp, 2)).fill("up"), ...Array(Math.min(nDown, 2)).fill("down"), ...Array(Math.min(nW, 2)).fill("worry")].filter(Boolean);
+      return `<div class="wd${date === TODAY ? " today" : ""}${date > TODAY ? " future" : ""}"><span class="l">${WEEKDAYS[i]}</span><span class="n">${+date.slice(8)}</span><span class="marks">${dots.map(k => `<i class="dot ${k}"></i>`).join("")}</span></div>`;
+    }).join("")}</div></div>`,
+    `<span class="legend"><span><i class="dot ans"></i>回答</span><span><i class="dot up"></i>充电</span><span><i class="dot down"></i>耗电</span><span><i class="dot worry"></i>心事</span></span>`)}
 
-  ${anything ? `
-  <div class="block">
-    <span class="eyebrow">反复出现的</span>
-    <div class="patterns">
-      <div class="card"><span class="eyebrow" style="color:var(--up)">让你充电的</span>${rank(ups, "这周还没有记录。")}</div>
-      <div class="card"><span class="eyebrow" style="color:var(--down)">让你耗电的</span>${rank(downs, "这周还没有记录。")}</div>
-      <div class="card"><span class="eyebrow" style="color:var(--accent)">被碰到的需要</span>${rank(needs, "补完心事的第 3 步，这里会出现。")}</div>
-      <div class="card"><span class="eyebrow" style="color:var(--warm)">和谁有关</span>${rank(people, "心事里写了“和谁有关”，会出现在这里。")}</div>
-    </div>
-  </div>` : `<div class="empty">这一周还没有留下记录。</div>`}
+  ${anything ? section("反复出现的", `<div class="tiles">
+      ${tile("orange", "up", "让你充电的", ups, "还没有记录")}
+      ${tile("teal", "down", "让你耗电的", downs, "还没有记录")}
+      ${tile("tint", "heart", "被碰到的需要", needs, "补完心事后出现")}
+      ${tile("pink", "person", "和谁有关", people, "心事里写了才有")}
+    </div>`) : section("", `<div class="card pad"><p class="muted">这一周还没有留下记录。</p></div>`)}
 
-  ${anything ? `
-  <div class="block">
-    <span class="eyebrow">镜子</span>
-    ${wk.ai ? `<p class="mirror">${esc(wk.ai)}</p>` : `<p class="hint">请它读一读这一周的记录，告诉你它看到了什么。它只描述，不给建议。</p>`}
-    <p class="mirror" id="mirror-live" hidden></p>
-    <div class="row">
-      <button class="btn" id="mirror" type="button" ${sampleFn ? "" : "hidden"}>${wk.ai ? "重新看一次" : "请它帮我看看这一周"}</button>
-      <button class="btn quiet" id="mirror-stop" type="button" hidden>停下</button>
-      <span class="hint" id="mirror-status"></span>
-    </div>
-  </div>` : ""}
+  ${anything ? section("镜子", `<div class="card">
+      <div class="pad stack">
+        ${wk.ai ? `<p class="body">${esc(wk.ai)}</p>` : `<p class="muted">请它读一读这一周的记录，说说它看到了什么。</p>`}
+        <p class="body" id="mirror-live" hidden></p>
+      </div>
+      <div class="cell" id="mirror-row" ${sampleFn ? "" : "hidden"}>
+        <span style="color:var(--tint);display:flex">${ICON.sparkle.replace("<svg", '<svg width="20" height="20"')}</span>
+        <button class="tintlink" id="mirror" type="button">${wk.ai ? "重新看一次" : "请它看看这一周"}</button>
+        <span class="main"></span>
+        <button class="tintlink" id="mirror-stop" type="button" hidden>停止</button>
+        <span class="mini" id="mirror-status"></span>
+      </div>
+    </div>`, "它只描述它看到的，不给建议。") : ""}
 
-  <div class="block">
-    <span class="eyebrow">写给这一周</span>
-    <div class="paper ritual">
-      <div class="block" style="gap:6px"><label for="r-moment">这周我最真实的一刻</label>
-        <textarea class="write" id="r-moment" style="min-height:3em" placeholder="哪一刻你没有在假装？">${esc(wk.moment)}</textarea></div>
-      <hr class="hair">
-      <div class="block" style="gap:6px"><label for="r-pattern">我注意到的一个重复</label>
-        <textarea class="write" id="r-pattern" style="min-height:3em" placeholder="同样的感受、同样的人、同样的情境……">${esc(wk.pattern)}</textarea></div>
-      <hr class="hair">
-      <div class="block" style="gap:6px"><label for="r-note">下周我想对自己说</label>
-        <textarea class="write" id="r-note" style="min-height:3em" placeholder="一句就够。">${esc(wk.note)}</textarea></div>
-    </div>
-  </div>
+  ${section("写给这一周", `<div class="card">
+      <div class="pad stack" style="gap:4px"><label class="mini" for="r-moment">这周我最真实的一刻</label><textarea class="txt short" id="r-moment" placeholder="哪一刻你没有在假装？">${esc(wk.moment)}</textarea></div>
+      <div class="sep"></div>
+      <div class="pad stack" style="gap:4px"><label class="mini" for="r-pattern">我注意到的一个重复</label><textarea class="txt short" id="r-pattern" placeholder="同样的感受、同样的人、同样的情境">${esc(wk.pattern)}</textarea></div>
+      <div class="sep"></div>
+      <div class="pad stack" style="gap:4px"><label class="mini" for="r-note">下周我想对自己说</label><textarea class="txt short" id="r-note" placeholder="一句就够">${esc(wk.note)}</textarea></div>
+    </div>`, `<span id="save-status">${whereText()}</span>`)}
 
-  ${rr ? `
-  <div class="block">
-    <span class="eyebrow">重读</span>
-    <div class="card">
-      <span class="meta"><span>${md(rr.doc.date)} · ${dayNumber(TODAY) - dayNumber(rr.doc.date)} 天前</span><span>${rr.doc.type === "worry" ? "一件心事" : "那天的问题"}</span></span>
-      ${rr.doc.type === "worry" ? `<p class="quote">${esc(rr.doc.vent)}</p>` : `<p style="margin:0;font-family:var(--font-serif);font-weight:500">${esc(QUESTIONS[rr.doc.q])}</p><p class="quote">${esc(rr.doc.answer)}</p>`}
-      ${rr.done
-        ? `<p class="full">${esc(rr.doc.later.find(l => l.date === TODAY).text)}</p><p class="hint">过去的你和现在的你，今天见了一面。</p>`
-        : `<textarea class="write" id="rr-text" style="min-height:3em" placeholder="现在再看，你怎么想？"></textarea>
-           <div class="row"><button class="btn solid" id="rr-save" type="button">写下现在的想法</button></div>`}
-    </div>
-  </div>` : ""}
+  ${rr ? section("重读 · " + ago(rr.doc.date), `<div class="card">
+      <div class="pad stack">
+        ${rr.doc.type === "worry" ? `<span class="mini">一件心事</span><p class="quote">${esc(rr.doc.vent)}</p>` : `<span class="mini">${esc(QUESTIONS[rr.doc.q])}</span><p class="quote">${esc(rr.doc.answer)}</p>`}
+        ${rr.done ? `<p class="body">${esc(rr.doc.later.find(l => l.date === TODAY).text)}</p>` : `<textarea class="txt short" id="rr-text" placeholder="现在再看，你怎么想？"></textarea>`}
+      </div>
+      ${rr.done ? "" : `<div class="cell"><span class="main"></span><button class="tintlink bold" id="rr-save" type="button">写下现在的想法</button></div>`}
+    </div>`, rr.done ? "过去的你和现在的你，今天见了一面。" : "每天一条，回头看看那时的自己。") : ""}
 
-  ${heavy.length ? `
-  <div class="block">
-    <span class="eyebrow">还压在心上的 · ${heavy.length}</span>
-    <div class="list">${heavy.slice(0, 5).map(w => `
-      <div class="card"><span class="meta"><span>${md(w.date)}${w.who ? " · " + esc(w.who) : ""}</span><span>${dayNumber(TODAY) - dayNumber(w.date)} 天</span></span>
-        <p class="excerpt">${esc(w.fact || w.vent)}</p>
-        <div class="row"><button class="btn quiet" data-open="${esc(w.id)}" type="button">${w.status === "vent" ? "补完它" : "再看看"}</button><button class="btn quiet" data-letgo="${esc(w.id)}" type="button">我放下了</button></div>
-      </div>`).join("")}</div>
-  </div>` : ""}
+  ${heavy.length ? section("还压在心上的", `<div class="card">${heavy.slice(0, 5).map(worryRow).join("")}</div>`) : ""}
 
-  ${pastWeeks.length ? `<details><summary>以前写给自己的 ${pastWeeks.length} 周</summary><div class="list">${pastWeeks.map(w => `
-    <div class="card"><span class="meta"><span>${md(w.start)} – ${md(addDays(w.start, 6))}</span></span>
-      ${w.moment ? `<p class="full"><span class="hint">最真实的一刻　</span>${esc(w.moment)}</p>` : ""}
-      ${w.pattern ? `<p class="full"><span class="hint">一个重复　</span>${esc(w.pattern)}</p>` : ""}
-      ${w.note ? `<p class="full"><span class="hint">对自己说　</span>${esc(w.note)}</p>` : ""}
-    </div>`).join("")}</div></details>` : ""}`;
+  ${pastWeeks.length ? section("", `<div class="card">
+    <button class="cell" type="button" data-toggle="weeks"><span class="main">以前写给自己的</span><span class="v">${pastWeeks.length} 周</span>${CHEV}</button>
+    ${ui.open.weeks ? pastWeeks.map(w => `<div class="cell"><span class="main stack" style="gap:6px">
+      <span class="mini">${md(w.start)} – ${md(addDays(w.start, 6))}</span>
+      ${w.moment ? `<p class="body"><span class="muted">最真实的一刻　</span>${esc(w.moment)}</p>` : ""}
+      ${w.pattern ? `<p class="body"><span class="muted">一个重复　</span>${esc(w.pattern)}</p>` : ""}
+      ${w.note ? `<p class="body"><span class="muted">对自己说　</span>${esc(w.note)}</p>` : ""}
+    </span></div>`).join("") : ""}
+  </div>`) : ""}`;
 
   $("prev").onclick = () => { ui.weekStart = addDays(ui.weekStart, -7); renderReview(); };
   $("next").onclick = () => { if (!isThisWeek) { ui.weekStart = addDays(ui.weekStart, 7); renderReview(); } };
-
   [["r-moment", "moment"], ["r-pattern", "pattern"], ["r-note", "note"]].forEach(([elId, key]) => {
     bindAutosave($(elId), v => { const w = { ...weekDoc(start) }; w[key] = v; return put("w-" + start, w); });
   });
-
   if (rr && !rr.done) {
-    const t = $("rr-text"); t.addEventListener("input", () => autogrow(t));
+    const t = $("rr-text"); grow(t);
     $("rr-save").onclick = () => {
       const text = t.value.trim(); if (!text) { t.focus(); return; }
       const doc = { ...store.docs[rr.id] };
@@ -676,12 +658,7 @@ function renderReview() {
       renderReview();
     };
   }
-  view.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { ui.worryId = b.dataset.open; show("worry"); window.scrollTo(0, 0); });
-  view.querySelectorAll("[data-letgo]").forEach(b => b.onclick = () => {
-    const doc = { ...store.docs[b.dataset.letgo], status: "letgo", letgoOn: TODAY };
-    put(b.dataset.letgo, doc).catch(() => {});
-    renderReview();
-  });
+  bindListActions(renderReview);
 
   const mBtn = $("mirror");
   if (mBtn) mBtn.onclick = async () => {
@@ -691,49 +668,38 @@ function renderReview() {
     stop.onclick = () => ctl.abort();
     try {
       const { text } = await sampleFn(MIRROR_RULES + weekMaterial(start), { cache: false, signal: ctl.signal, onText: ({ text }) => { live.textContent = text; } });
-      const w = { ...weekDoc(start), ai: text.trim() };
-      put("w-" + start, w).catch(() => {});
+      put("w-" + start, { ...weekDoc(start), ai: text.trim() }).catch(() => {});
       if (ui.tab === "review") renderReview();
     } catch (e) {
       live.hidden = true; mBtn.disabled = false; stop.hidden = true;
-      if (e && e.code === "not_granted") { sampleFn = null; mBtn.hidden = true; st.textContent = "没有开启这个功能，其他部分照常可用。"; }
-      else if (e && e.code === "rate_limited") st.textContent = "稍等一会儿再试。";
-      else if (!(e && e.code === "cancelled")) st.textContent = "这次没看成，稍后再试。";
+      if (e && e.code === "not_granted") { sampleFn = null; st.textContent = "未开启"; }
+      else if (e && e.code === "rate_limited") st.textContent = "稍后再试";
+      else if (!(e && e.code === "cancelled")) st.textContent = "这次没看成";
     }
   };
 }
 
 /* ---------- 来信 ---------- */
-function addMonths(dateStr, m) {
-  const d = parseDate(dateStr); d.setMonth(d.getMonth() + m); return ymd(d);
-}
+function addMonths(dateStr, m) { const d = parseDate(dateStr); d.setMonth(d.getMonth() + m); return ymd(d); }
+const ymdCN = s => s.slice(0, 4) + "年" + md(s);
 function renderLetter() {
   const letters = store.list("letter").sort((a, b) => a.openOn.localeCompare(b.openOn));
   const open = letters.filter(l => l.openOn <= TODAY), sealed = letters.filter(l => l.openOn > TODAY);
   view.innerHTML = `
-  <div class="page-head">
-    <span class="eyebrow">来信</span>
-    <h1>写给以后的自己</h1>
-    <p class="sub">把现在的困惑封存起来。过一阵子再读，你会看见自己走了多远。</p>
-  </div>
-  <div class="paper">
-    <textarea class="write" id="l-body" placeholder="写写你现在在纠结什么、害怕什么、期待什么。"></textarea>
-    <div class="foot">
-      <select class="field small-field" id="l-when" style="flex:0 1 auto;width:auto" aria-label="多久后打开">
-        <option value="1">1 个月后打开</option>
-        <option value="3">3 个月后打开</option>
-        <option value="6" selected>半年后打开</option>
-        <option value="12">1 年后打开</option>
-      </select>
-      <button class="btn solid" id="l-save" type="button">封存</button>
+  ${largeTitle("写给以后的自己", "来信", true)}
+  ${section("", `
+    <div class="card">
+      <div class="pad"><textarea class="txt" id="l-body" placeholder="写写你现在在纠结什么、害怕什么、期待什么。"></textarea></div>
+      <div class="cell"><label class="formlabel" for="l-when">打开时间</label><span class="main"></span>
+        <select class="sel" id="l-when"><option value="1">1 个月后</option><option value="3">3 个月后</option><option value="6" selected>半年后</option><option value="12">1 年后</option></select>${CHEV}</div>
     </div>
-  </div>
-  ${open.length ? `<div class="block"><span class="eyebrow">可以拆开的信</span><div class="list">${open.map(l => `
-    <div class="card"><span class="meta"><span>写于 ${l.date.slice(0, 4)} 年 ${md(l.date)}</span><button class="btn quiet danger" data-del="${esc(l.id)}" type="button">删除</button></span><p class="full">${esc(l.body)}</p></div>`).join("")}</div></div>` : ""}
-  ${sealed.length ? `<div class="block"><span class="eyebrow">还在路上的信</span><div class="list">${sealed.map(l => `
-    <div class="card" style="background:var(--accent-soft);border-color:transparent"><span class="meta"><span>写于 ${md(l.date)}</span><span>还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天</span></span><p style="margin:0;font-family:var(--font-serif)">${l.openOn.slice(0, 4)} 年 ${md(l.openOn)} 开启</p></div>`).join("")}</div></div>` : ""}
-  ${!letters.length ? `<div class="empty">还没有信。写一封，半年后的你会收到。</div>` : ""}`;
-  $("l-body").addEventListener("input", e => autogrow(e.target));
+    <button class="bigbtn" id="l-save" type="button">封存</button>`, "到了那天，这封信才能打开。")}
+  ${open.length ? section("可以拆开的信", `<div class="card">${open.map(l => `
+    <button class="cell ico" type="button" data-toggle="${esc(l.id)}">${sq("tint", "mail")}<span class="main"><span class="t">写于 ${ymdCN(l.date)}</span><span class="s">${esc(l.body)}</span></span>${CHEV}</button>
+    ${ui.open[l.id] ? `<div class="cell"><span class="main stack"><p class="body">${esc(l.body)}</p><span><button class="tintlink destruct" type="button" data-del="${esc(l.id)}">删除</button></span></span></div>` : ""}`).join("")}</div>`) : ""}
+  ${sealed.length ? section("还在路上的信", `<div class="card">${sealed.map(l => `
+    <div class="cell ico">${sq("label-3", "lock")}<span class="main"><span class="t">${ymdCN(l.openOn)} 开启</span><span class="s">写于 ${md(l.date)}</span></span><span class="v">还有 ${dayNumber(l.openOn) - dayNumber(TODAY)} 天</span></div>`).join("")}</div>`) : ""}`;
+  grow($("l-body"));
   $("l-save").onclick = () => {
     const body = $("l-body").value.trim();
     if (!body) { $("l-body").focus(); return; }
@@ -741,32 +707,35 @@ function renderLetter() {
     put("l-" + at, { type: "letter", at, date: TODAY, body, openOn: addMonths(TODAY, +$("l-when").value) }).catch(() => {});
     renderLetter();
   };
-  view.querySelectorAll("[data-del]").forEach(b => b.onclick = () => confirmDelete(b, () => { store.remove(b.dataset.del).catch(() => {}); renderLetter(); }));
+  view.querySelectorAll("[data-toggle]").forEach(b => b.onclick = () => { ui.open[b.dataset.toggle] = !ui.open[b.dataset.toggle]; renderLetter(); });
+  view.querySelectorAll("[data-del]").forEach(b => b.onclick = () => arm(b, "确定删除", () => { store.remove(b.dataset.del).catch(() => {}); renderLetter(); }));
 }
 
 /* ---------- shell ---------- */
-const RENDER = { today: renderToday, worry: renderWorry, review: renderReview, letter: renderLetter };
+const TABS = [["today", "今天", renderToday], ["worry", "心事", renderWorry], ["review", "回顾", renderReview], ["letter", "来信", renderLetter]];
+$("tabs").innerHTML = TABS.map(([k, label]) => `<button role="tab" type="button" data-tab="${k}" aria-selected="false">${ICON[k]}<span>${label}</span></button>`).join("");
 function show(t) {
-  ui.tab = RENDER[t] ? t : "today";
+  const entry = TABS.find(x => x[0] === t) || TABS[0];
+  ui.tab = entry[0];
   try { sessionStorage.setItem("seekway-tab", ui.tab); } catch (e) {}
-  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === ui.tab)));
-  RENDER[ui.tab]();
+  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === ui.tab)));
+  entry[2]();
+  onScroll();
 }
-document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
-  if (b.dataset.tab === "worry" && ui.tab === "worry") ui.worryId = null;
+document.querySelectorAll(".tabbar button").forEach(b => b.onclick = () => {
+  if (b.dataset.tab === ui.tab) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
   show(b.dataset.tab); window.scrollTo(0, 0);
 });
+function onScroll() { $("navbar").classList.toggle("on", window.scrollY > 60); }
+window.addEventListener("scroll", onScroll, { passive: true });
 
 if (window.claude && window.claude.use) {
   window.claude.use("sample").then(fn => {
     sampleFn = fn;
-    const b = $("mirror"); if (fn && b) b.hidden = false;
+    const row = $("mirror-row"); if (fn && row) row.hidden = false;
   }).catch(() => {});
 }
-store.init().then(() => {
-  $("where").textContent = whereText();
-  show(ui.tab);
-});
+store.init().then(() => show(ui.tab));
 </script>
 
 </body>

@@ -1,3 +1,5 @@
+<img src="icon.svg" width="72" alt="Seekway">
+
 # Seekway
 
 一个帮你向内看的小工具：每天问自己一个问题，慢慢找到自己的路。
@@ -12,6 +14,8 @@
 ## 运行
 
 整个应用就是一个 `index.html`，不需要构建。直接用浏览器打开，或部署到 GitHub Pages 即可。
+
+在 iPhone 上用 Safari 打开后，点「分享」→「添加到主屏幕」，它就会像一个 App 一样全屏运行。
 
 - 独立打开时，记录保存在当前浏览器的 localStorage 里。
 - 作为 Claude Artifact 打开时，记录保存在只属于你的私人空间，可以跨设备同步，并可使用 AI「镜子」功能。
