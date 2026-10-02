@@ -194,13 +194,21 @@ button.item:active { opacity: .6; }
 .rnode.tone-down { background: var(--cool); }
 .rnode.has-worry { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--rose); }
 .rnode.here { width: 20px; height: 20px; background: var(--accent); box-shadow: 0 0 0 4px var(--bg), 0 0 0 9px var(--accent-soft); }
+.rnode.here.tone-up { background: var(--warm); }
+.rnode.here.tone-down { background: var(--cool); }
 .rnode.week, .rnode.start { width: 30px; height: 30px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); }
 .rnode.start { background: var(--fill); color: var(--muted); }
 .rnode svg { width: 17px; height: 17px; }
 .rlabel { position: absolute; transform: translateY(-50%); display: flex; flex-direction: column; gap: 1px; }
 .rlabel.l { text-align: right; align-items: flex-end; }
 .rlabel .rt { font-size: 13px; color: var(--muted); }
-.rlabel .rb { font-size: 15px; color: var(--ink); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.rel { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.rlabel.l .rel { justify-content: flex-end; }
+.re { font-size: 12px; padding: 1px 8px; border-radius: 999px; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.re.up { background: var(--warm-soft); color: var(--warm); }
+.re.down { background: var(--cool-soft); color: var(--cool); }
+.legend .ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rose); }
+.rlabel .rb { font-size: 15px; color: var(--ink); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: no-preference) {
   .rnode.here { animation: breathe 2.6s ease-in-out infinite; }
@@ -872,7 +880,7 @@ function stopSnippet(s) {
   if (s.kind === "week") return s.week.note || s.week.moment || s.week.pattern || "写给这一周的话";
   if (s.day && s.day.answer && s.day.answer.trim()) return s.day.answer.trim();
   if (s.worries.length) return s.worries[0].fact || s.worries[0].vent;
-  if (s.day && (s.day.energy || []).length) return s.day.energy.map(e => (e.kind === "up" ? "↑ " : "↓ ") + e.text).join("　");
+
   if (s.letters.length) return "写了一封给以后的信";
   return "";
 }
@@ -883,6 +891,13 @@ function stopTone(s) {
   return up > down ? "up" : down > up ? "down" : "calm";
 }
 let roadResize;
+function energyLine(s) {
+  const e = (s && s.day && s.day.energy) || [];
+  if (!e.length) return "";
+  const up = e.filter(x => x.kind === "up"), down = e.filter(x => x.kind === "down");
+  const part = (arr, kind) => arr.length ? `<span class="re ${kind}">${kind === "up" ? "↑ 充电" : "↓ 耗电"} ${esc(arr.slice(0, 2).map(x => x.text).join("、"))}${arr.length > 2 ? " 等" : ""}</span>` : "";
+  return `<span class="rel">${part(up, "up")}${part(down, "down")}</span>`;
+}
 function renderRoad(animate) {
   const stops = roadStops();
   const todayStop = stops.find(s => s.kind === "day" && s.date === TODAY);
@@ -894,21 +909,28 @@ function renderRoad(animate) {
     ${reviewSwitch()}
     <div><div class="kicker">${first ? "从 " + md(first) + " 到今天" : "从今天开始"}</div><h1>一路走来</h1></div>
     <p class="hint">${stops.filter(s => s.day).length ? `你已经走了 ${stops.filter(s => s.day).length} 步。点路上的任意一站，回到那一天。` : "每记录一天，路上就多一站。"}</p>
+    <div class="legend"><span><i class="c-up"></i>这天充电多</span><span><i class="c-down"></i>这天耗电多</span><span><i class="c-ans"></i>持平或只写了回答</span><span><i class="ring"></i>有心事</span></div>
     <div class="road" id="road"></div>
   </div>`, animate);
   const road = $("road");
-  const W = road.clientWidth, gap = 104, top = 34;
+  const W = road.clientWidth, gap = 124, top = 34;
   const pts = list.map((_, i) => [W / 2 + Math.sin(i * 0.95 + 0.5) * W * 0.27, top + i * gap]);
   const H = top + (list.length - 1) * gap + 60;
+  const TONE = { up: "var(--warm)", down: "var(--cool)", calm: "var(--accent)" };
+  const segs = [];
   let d = `M${pts[0][0]} ${pts[0][1] - 30} L${pts[0][0]} ${pts[0][1]}`;
   for (let i = 0; i < pts.length - 1; i++) {
     const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-    d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
+    const c = ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
+    d += c;
+    const s = list[i].kind === "here" ? list[i].stop : list[i];
+    if (s && s.kind === "day" && s.day) segs.push(`<path d="M${p1[0]} ${p1[1]}${c}" fill="none" stroke="${TONE[stopTone(s)]}" stroke-width="5" stroke-linecap="round" opacity=".45"/>`);
   }
   road.style.height = H + "px";
   road.innerHTML = `
     <svg width="${W}" height="${H}" aria-hidden="true">
       <path class="road-bed" d="${d}" fill="none" stroke="var(--road)" stroke-width="16" stroke-linecap="round"/>
+      ${segs.join("")}
       <path class="road-line" d="${d}" fill="none" stroke="var(--road-line)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 9"/>
     </svg>
     ${list.map((s, i) => {
@@ -917,7 +939,7 @@ function renderRoad(animate) {
       const pos = right ? `left:${x + 22}px` : `right:${W - x + 22}px`;
       let node, title, body = "";
       if (s.kind === "here") {
-        node = `<span class="rnode here"></span>`;
+        node = `<span class="rnode here${s.stop && s.stop.day ? " tone-" + stopTone(s.stop) : ""}${s.stop && s.stop.worries.length ? " has-worry" : ""}"></span>`;
         title = `今天 · 你在这里`;
         body = s.stop ? stopSnippet(s.stop) : "今天还没有记录";
       } else if (s.kind === "start") {
@@ -936,7 +958,7 @@ function renderRoad(animate) {
       const clickable = s.kind !== "start" && !(s.kind === "here" && !s.stop);
       return `<button class="rstop" type="button" style="top:${y}px;left:${x}px" ${clickable ? `data-stop="${i}"` : "disabled"} aria-label="${esc(title)}">${node}</button>
         <div class="rlabel ${right ? "r" : "l"}" style="top:${y}px;${pos};width:${Math.max(90, lw)}px">
-          <span class="rt">${esc(title)}</span>${body ? `<span class="rb">${esc(body)}</span>` : ""}
+          <span class="rt">${esc(title)}</span>${body ? `<span class="rb">${esc(body)}</span>` : ""}${energyLine(s.kind === "here" ? s.stop : s)}
         </div>`;
     }).join("")}`;
   if (animate && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
