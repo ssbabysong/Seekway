@@ -53,7 +53,10 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: man
 body { overflow-x: hidden; overscroll-behavior-y: none; }
 button, .tabbar, .hero { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 body { color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
-body.locked { overflow: hidden; }
+html, body { height: 100%; overflow: hidden; }
+.scroller { position: fixed; inset: 0; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+body.locked .scroller { overflow: hidden; }
+.tabbar { transform: translateZ(0); }
 button { font: inherit; color: inherit; }
 :root { padding-top: 0 !important; }
 .app { --hero-base: calc(250px + env(safe-area-inset-top, 0px)); --hero-full: calc(330px + env(safe-area-inset-top, 0px)); max-width: 560px; margin: 0 auto; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
@@ -317,7 +320,7 @@ button.item:active { opacity: .6; }
 }
 </style>
 
-<div class="app"><div class="hero" id="hero" data-sky="day"></div><main class="sheet" id="view"></main></div>
+<div class="scroller" id="scroller"><div class="app"><div class="hero" id="hero" data-sky="day"></div><main class="sheet" id="view"></main></div></div>
 <nav class="tabbar" aria-label="页面"><div class="in" role="tablist" id="tabs"></div></nav>
 <div id="sheet-root"></div>
 
@@ -1117,7 +1120,7 @@ function renderRoad(animate) {
   }
   road.querySelectorAll("[data-stop]").forEach(b => b.onclick = () => {
     const s = list[+b.dataset.stop];
-    if (s.kind === "week") { ui.weekStart = s.week.start; ui.reviewMode = "week"; renderReview(true); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    if (s.kind === "week") { ui.weekStart = s.week.start; ui.reviewMode = "week"; renderReview(true); $("scroller").scrollTo({ top: 0, behavior: "smooth" }); return; }
     openDaySheet(s.kind === "here" ? s.stop : s);
   });
   road.querySelectorAll(".rlabel").forEach((l, i) => { const b = road.querySelectorAll(".rstop")[i]; if (!b.disabled) { l.style.cursor = "pointer"; l.onclick = () => b.click(); } });
@@ -1321,8 +1324,8 @@ function show(t) {
   entry[2](true);
 }
 document.querySelectorAll(".tabbar button").forEach(b => b.onclick = () => {
-  if (b.dataset.tab === ui.tab) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-  show(b.dataset.tab); window.scrollTo(0, 0);
+  if (b.dataset.tab === ui.tab) { $("scroller").scrollTo({ top: 0, behavior: "smooth" }); return; }
+  show(b.dataset.tab); $("scroller").scrollTop = 0;
 });
 try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => renderHero()); } catch (e) {}
 
@@ -1406,7 +1409,7 @@ function toggleHero(open) { if (open !== heroOpen) haptic(); heroOpen = open; ap
     if (past !== crossed) { crossed = past; if (past) haptic(); }
   };
   window.addEventListener("touchstart", e => {
-    if (e.touches.length !== 1 || window.scrollY > 2 || blocked(e.target)) { y0 = null; return; }
+    if (e.touches.length !== 1 || $("scroller").scrollTop > 2 || blocked(e.target)) { y0 = null; return; }
     y0 = e.touches[0].clientY; dy = 0; crossed = false;
   }, { passive: true });
   window.addEventListener("touchmove", e => {
